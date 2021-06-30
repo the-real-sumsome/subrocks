@@ -1,0 +1,11 @@
+{
+    "sql": "from_env",
+    "server": {
+        "host": "queuer",
+        "port": 1024
+    },
+    "queue": {
+        "videos": "/dynamic/videos",
+        "thumbs": "/dynamic/thumbs"
+    }
+}

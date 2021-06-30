@@ -1,0 +1,18 @@
+Options -Indexes
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule (.*) $1.php [L]
+RewriteRule ^(user/(.*?)/feed)/?$ channel_feed.php?n=$2 [L]
+RewriteCond %{QUERY_STRING} view=1
+RewriteRule ^(user/(.*?)/videos)/?$ channel_playlists.php?n=$2 [L]
+RewriteCond %{QUERY_STRING} view=0
+RewriteRule ^(user/(.*?)/videos)/?$ channel_videos.php?n=$2 [L]
+RewriteRule ^(user/(.*?)/videos)/?$ channel_videos.php?n=$2 [L]
+RewriteRule ^(user/(.*?)/featured)/?$ channel.php?n=$2 [L]
+RewriteRule ^(user/(.*?))/?$ channel.php?n=$2 [L]
+
+php_value post_max_size 750M
+php_value upload_max_filesize 750M
+
+ErrorDocument 404 /404
