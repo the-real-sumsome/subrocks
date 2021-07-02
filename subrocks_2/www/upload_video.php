@@ -114,7 +114,7 @@ padding-right: 77px;">
                                 }
                             </script>
                             <b>Tags</b> <br>
-                            <input id="tags" class="upload-inputs" placeholder="Seperate tags with commas" type="text" name="tags" required="required" row="20"><br><br>
+                            <input id="tags" class="upload-inputs" placeholder="Seperate tags with commas" type="text" name="tags" row="20"><br><br>
                         
                             <b><?php if(!isset($cLang)) { ?> Recommended Tags <?php } else { echo $cLang['rectag']; } ?> </b><br><br>
                             <div style="width: 345px;">
