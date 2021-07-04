@@ -10,6 +10,9 @@
   $_video_fetch_utils->initialize_db_var($conn);
   $_user_fetch_utils->initialize_db_var($conn);
 
+  if(!isset($_SESSION['siteusername']))
+  header("Location: /sign_in");
+
   $_base_utils->initialize_page_compass("Video Manager");
 ?>
 <!DOCTYPE html>

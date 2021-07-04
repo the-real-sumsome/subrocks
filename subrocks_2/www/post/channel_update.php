@@ -46,6 +46,16 @@
         $_user_update_utils->update_user_banner_display($_SESSION['siteusername'], $_POST['bannerdisplay']);
     } else if($_SERVER['REQUEST_METHOD'] == 'POST' && @$_POST['setchannellayout']) {
         //updateUserChannelLayout($_SESSION['siteusername'], $_POST['channellayout'], $conn);
+    } else if($_SERVER['REQUEST_METHOD'] == 'POST' && @$_POST['primary']) {
+        $_user_update_utils->update_user_primary_color($_SESSION['siteusername'], $_POST['solidcolor']);
+    } else if($_SERVER['REQUEST_METHOD'] == 'POST' && @$_POST['secondary']) {
+        $_user_update_utils->update_user_secondary_color($_SESSION['siteusername'], $_POST['solidcolor']);
+    } else if($_SERVER['REQUEST_METHOD'] == 'POST' && @$_POST['third']) {
+        $_user_update_utils->update_user_third_color($_SESSION['siteusername'], $_POST['solidcolor']);
+    } else if($_SERVER['REQUEST_METHOD'] == 'POST' && @$_POST['textcolor']) {
+        $_user_update_utils->update_user_text_color($_SESSION['siteusername'], $_POST['solidcolor']);
+    } else if($_SERVER['REQUEST_METHOD'] == 'POST' && @$_POST['textprimarycolor']) {
+        $_user_update_utils->update_user_primary_text_color($_SESSION['siteusername'], $_POST['solidcolor']);
     } else if($_SERVER['REQUEST_METHOD'] == 'POST' && @$_POST['bgoptionset']) {
         $bgoption = $_POST['bgoption'];
         $bgcolor = $_POST['solidcolor'];

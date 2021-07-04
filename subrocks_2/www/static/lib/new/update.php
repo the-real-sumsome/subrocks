@@ -70,6 +70,51 @@ class user_update_utils {
     
     return true;
     }
+
+    function update_user_primary_color($username, $type) {
+        $stmt = $this->conn->prepare("UPDATE users SET primary_color = ? WHERE username = ?");
+        $stmt->bind_param("ss", $type, $username);
+        $stmt->execute();
+    $stmt->close();
+    
+    return true;
+    }
+
+    function update_user_secondary_color($username, $type) {
+        $stmt = $this->conn->prepare("UPDATE users SET secondary_color = ? WHERE username = ?");
+        $stmt->bind_param("ss", $type, $username);
+        $stmt->execute();
+    $stmt->close();
+    
+    return true;
+    }
+
+    function update_user_third_color($username, $type) {
+        $stmt = $this->conn->prepare("UPDATE users SET third_color = ? WHERE username = ?");
+        $stmt->bind_param("ss", $type, $username);
+        $stmt->execute();
+    $stmt->close();
+    
+    return true;
+    }
+
+    function update_user_text_color($username, $type) {
+        $stmt = $this->conn->prepare("UPDATE users SET text_color = ? WHERE username = ?");
+        $stmt->bind_param("ss", $type, $username);
+        $stmt->execute();
+    $stmt->close();
+    
+    return true;
+    }
+
+    function update_user_primary_text_color($username, $type) {
+        $stmt = $this->conn->prepare("UPDATE users SET primary_color_text = ? WHERE username = ?");
+        $stmt->bind_param("ss", $type, $username);
+        $stmt->execute();
+    $stmt->close();
+    
+    return true;
+    }
 }
 
 /**

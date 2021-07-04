@@ -15,6 +15,9 @@
     $_user_insert_utils->initialize_db_var($conn);
     $_video_insert_utils->initialize_db_var($conn);
 
+    if(!$_user_fetch_utils->user_exists($_GET['n']))
+        header("Location: /?userdoesntexist");
+
     $_user = $_user_fetch_utils->fetch_user_username($_GET['n']);
     $_user['subscribed'] = $_user_fetch_utils->if_subscribed(@$_SESSION['siteusername'], $_user['username']);
     $_user['dLinks'] = json_decode($_user['links']);
@@ -26,10 +29,6 @@
     $_base_utils->initialize_page_compass(htmlspecialchars($_user['username']));
     $_video_insert_utils->check_view_channel($_user['username'], @$_SESSION['siteusername']);
 
-    if(empty($_user['bio'])) {
-        $_user['bio'] = "No bio specified...";
-    }
-
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
         if(!isset($_SESSION['siteusername'])){ $error = "you are not logged in"; goto skipcomment; }
         if(!$_POST['comment']){ $error = "your comment cannot be blank"; goto skipcomment; }
@@ -39,7 +38,7 @@
 
         $stmt = $conn->prepare("INSERT INTO `profile_comments` (toid, author, comment) VALUES (?, ?, ?)");
         $stmt->bind_param("sss", $_user['username'], $_SESSION['siteusername'], $text);
-        $text = htmlspecialchars($_POST['comment']);
+        $text = ($_POST['comment']);
         $stmt->execute();
         $stmt->close();
         skipcomment:
@@ -53,10 +52,12 @@
         <link rel="stylesheet" href="/static/css/new/www-core.css">
         <script src='https://www.google.com/recaptcha/api.js' async defer></script>
         <script>function onLogin(token){ document.getElementById('submitform').submit(); }</script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="/static/js/channel-customization.js"></script>
         <style>
             .channel-box-top {
-                background: #666;
-                color: white;
+                background: <?php echo htmlspecialchars($_user['primary_color']); ?>;
+                color: <?php echo htmlspecialchars($_user['text_color']); ?>;
                 padding: 5px;
             }
 
@@ -66,23 +67,24 @@
             }
 
             .channel-box-description {
-                background: #e6e6e6;
-                border: 1px solid #666;
-                color: #666;
+                background: <?php echo htmlspecialchars($_user['secondary_color']); ?>;
+                border: 1px solid <?php echo htmlspecialchars($_user['primary_color']); ?>;
+                color: <?php echo htmlspecialchars($_user['primary_color_text']); ?>;
                 padding: 5px;
             }
 
             .channel-box-no-bg {
-                border: 1px solid #666;
-                color: black;
+                border: 1px solid <?php echo htmlspecialchars($_user['primary_color']); ?>;
+                color: <?php echo htmlspecialchars($_user['primary_color_text']); ?>;
                 padding: 5px;
+                background-color: <?php echo htmlspecialchars($_user['third_color']); ?>;
             }
 
             .channel-pfp {
                 height: 88px;
                 width: 88px;
-                border-color: #666;
-                border: 3px double #999;
+                border-color: <?php echo htmlspecialchars($_user['primary_color']); ?>;
+                border: 3px double <?php echo htmlspecialchars($_user['primary_color']); ?>;
             }
 
             .channel-stats {
@@ -97,18 +99,85 @@
             .comment-pfp {
                 width: 52px;
                 height: 52px;
-                border-color: #666;
+                border-color: <?php echo htmlspecialchars($_user['primary_color']); ?>;
                 display: inline-block;
-                border: 3px double #999;
+                border: 3px double <?php echo htmlspecialchars($_user['primary_color']); ?>;;
+            }
+
+            .featured-video-info {
+                border: 1px solid <?php echo htmlspecialchars($_user['primary_color']); ?>;
+                color: black;
+                padding: 5px;
+                background-color: <?php echo htmlspecialchars($_user['third_color']); ?>;
+                font-size: 10px;
+                margin-top: -3px;
+                margin-bottom: 11px;
+            }
+
+            .www-channel-left a {
+                color: <?php echo htmlspecialchars($_user['primary_color_text']); ?>;
+            }
+
+            .www-channel-right a {
+                color: <?php echo htmlspecialchars($_user['primary_color_text']); ?>;
+            }
+        </style>
+        <style>
+            body {
+                position: absolute;
+                right: 0;
+                top: 0px;
+                left: 0px;
+                z-index: -1;
+                background-color: <?php echo htmlspecialchars($_user['2012_bgcolor']); ?>;
+                background-image: url(/dynamic/banners/<?php echo $_user['2012_bg']; ?>);
+                background-position: center-top;
+                <?php
+                    $bgoption = "";
+                            /*
+                                <select name="bgoption" id="cars">
+                                    <option value="repeaty">Repeat - Y</option>
+                                    <option value="repeatx">Repeat - X</option>
+                                    <option value="repeatxy">Repeat - X and Y</option>
+                                    <option value="stretch">Stretch</option>
+                                    <option value="solid">Solid</option>
+                                </select>
+                            */
+
+                    switch($_user['2012_bgoption']) {
+                        case "stretch":
+                        echo "background-size: cover;";
+                        break;
+                        case "solid":
+                        echo "";
+                        break;
+                        case "norepeat":
+                        echo "";
+                        break;
+                        case "repeatxy":
+                        echo "background-repeat: repeat;";
+                        break;
+                        case "repeaty":
+                        echo "background-repeat: repeat-y;";
+                        break;
+                        case "repeatx":
+                        echo "background-repeat: repeat-x;";
+                        break;
+                    }
+                ?>
             }
         </style>
     </head>
     <body>
         <div class="www-core-container">
             <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/module/channel_header.php"); ?><br>
+            <?php 
+            if(isset($_SESSION['siteusername']) && $_SESSION['siteusername'] == $_user['username']) 
+                require($_SERVER['DOCUMENT_ROOT'] . "/static/module/channel_customization.php");
+            ?>
             <center>
-                <a href="/user/<?php echo htmlspecialchars($_user['username']); ?>/videos">Videos</a> | 
-                <a href="/user/<?php echo htmlspecialchars($_user['username']); ?>/favorites">Favorites</a> |
+                <a href="/user/<?php echo htmlspecialchars($_user['username']); ?>">Videos</a> | 
+                <a href="/channel_favorites?n=<?php echo htmlspecialchars($_user['username']); ?>">Favorites</a> |
                 <a href="/user/<?php echo htmlspecialchars($_user['username']); ?>/playlists">Playlists</a> |
                 <a href="/user/<?php echo htmlspecialchars($_user['username']); ?>/groups">Groups</a> |
                 <a href="/user/<?php echo htmlspecialchars($_user['username']); ?>/friends">Friends</a> |  
@@ -118,11 +187,17 @@
             <div class="www-channel-left">
                 <div class="channel-box-profle">
                     <div class="channel-box-top">
-                        <h3 style="display: inline-block;"><?php echo htmlspecialchars($_user['username']); ?>'s Channel</h3>
+                        <h3 style="display: inline-block;"><?php echo htmlspecialchars(substr($_user['username'], 0, 16)); ?>'s Channel</h3>
 
+                        <?php if(@$_SESSION['siteusername'] != $_user['username']) { ?>
                         <a href="/get/<?php if($_user['subscribed'] == true) { ?>un<?php } ?>subscribe?n=<?php echo htmlspecialchars($_user['username']); ?>">
                             <button style="margin: 0px;" class="sub_button"><?php if($_user['subscribed'] == true) { ?>Unsubscribe<?php } else { ?>Subscribe<?php } ?></button>
                         </a>
+                        <?php } else { ?>
+                        <a href="#">
+                            <button style="margin: 0px;" class="sub_button" onclick="dropdownchannel()">Edit Channel</button>
+                        </a>
+                        <?php } ?>
                     </div>
                     <div class="channel-box-description">
                         <img class="channel-pfp" src="/dynamic/pfp/<?php echo $_user['pfp']; ?>">
@@ -135,7 +210,8 @@
                                 Subscribers: <b><?php echo $_user_fetch_utils->fetch_subs_count($_user['username']); ?></b><br>
                                 Channels Views: <b><?php echo $_user_fetch_utils->get_channel_views($_user['username']); ?></b><br>
                             </span>
-                        </span>
+                        </span><br>
+                        <?php echo $_video_fetch_utils->parseTextDescription($_user['bio']); ?>
                     </div>
                 </div><br>
                 <div class="channel-box-profle">
@@ -172,7 +248,7 @@
                                     background-image: url(/dynamic/thumbs/<?php echo $video['thumbnail']; ?>), url('/dynamic/thumbs/default.png');"><span class="timestamp"><?php echo $_video_fetch_utils->timestamp($video['duration']); ?></span></div>
                                 
                                 <div class="video-info-watch" style="width: 170px;">
-                                    <a href="/watch?v=<?php echo $video['rid']; ?>"><b><?php echo htmlspecialchars($video['title']); ?></b></a><br>
+                                    <a href="/watch?v=<?php echo $video['rid']; ?>"><b><?php echo $_video_fetch_utils->parse_title($video['title']);  ?></b></a><br>
                                     <span class="video-info-small-wide">
                                         <span class="video-views"><?php echo $_video_fetch_utils->fetch_video_views($video['rid']); ?> views</span><br>
                                         <a style="padding-left: 0px;" class="video-author-wide" href="/user/<?php echo htmlspecialchars($video['author']); ?>"><?php echo htmlspecialchars($video['author']); ?></a>
@@ -192,7 +268,7 @@
                     </div>
                     <div class="channel-box-no-bg">
                         <?php
-                            $stmt = $conn->prepare("SELECT reciever FROM subscribers WHERE sender = ? ORDER BY id DESC LIMIT 8");
+                            $stmt = $conn->prepare("SELECT reciever FROM subscribers WHERE sender = ? ORDER BY id DESC LIMIT 9");
                             $stmt->bind_param("s", $_user['username']);
                             $stmt->execute();
                             $result = $stmt->get_result();
@@ -200,7 +276,7 @@
                                 if($_user_fetch_utils->user_exists($subscriber['reciever'])) {
                         ?>
 
-                                <div class="grid-item" style="width: 66px;">
+                                <div class="grid-item" style="width: 90px;">
                                     <img class="channel-pfp" style="width: 58px; height: 58px;" src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($subscriber['reciever']); ?>"><br>
                                     <a style="font-size: 10px;text-decoration: none;" href="/user/<?php echo htmlspecialchars($subscriber['reciever']); ?>"><?php echo htmlspecialchars($subscriber['reciever']); ?></a>
                                 </div>
@@ -210,6 +286,18 @@
                 <?php } ?>
             </div>
             <div class="www-channel-right">
+                <?php if($_user['featured'] != "None" && $_video_fetch_utils->video_exists($_user['featured'])) { 
+                    $video = $_video_fetch_utils->fetch_video_rid($_user['featured']); ?>
+                    <center>
+                        <iframe style="border: 0px; overflow: hidden;" src="/2007/lolplayer?id=<?php echo $_user['featured']; ?>" height="365" width="646"></iframe>
+                    </center>
+                    <div class="featured-video-info">
+                        <h3><a href="/watch?v=<?php echo htmlspecialchars($_user['featured']); ?>"><?php echo $_video_fetch_utils->parse_title($video['title']);  ?></a></h3>
+                        From: <a href="/user/<?php echo htmlspecialchars($_user['username']); ?>"><?php echo htmlspecialchars($_user['username']); ?></a><br>
+                        Views: <?php echo $_video_fetch_utils->fetch_video_views($video['rid']); ?></a><br>
+                    </div>
+                <?php } ?>
+
                 <?php if($_user['videos'] != 0) { ?>
                 <div class="channel-box-profle">
                     <div class="channel-box-top" style="height: 12px;">
@@ -217,7 +305,7 @@
                     </div>
                     <div class="channel-box-no-bg">
                         <?php
-                            $stmt = $conn->prepare("SELECT rid, title, thumbnail, duration, title, author, publish, description FROM videos WHERE author = ? AND visibility = 'v' ORDER BY id DESC LIMIT 8");
+                            $stmt = $conn->prepare("SELECT rid, title, thumbnail, duration, title, author, publish, description FROM videos WHERE author = ? ORDER BY id DESC LIMIT 8");
                             $stmt->bind_param("s", $_user['username']);
                             $stmt->execute();
                             $result = $stmt->get_result();
@@ -227,7 +315,7 @@
                                 <div class="grid-item" style="">
                                     <img class="thumbnail" src="/dynamic/thumbs/<?php echo htmlspecialchars($video['thumbnail']); ?>">
                                     <div class="video-info-grid">
-                                        <a href="/watch?v=<?php echo $video['rid']; ?>"><?php echo htmlspecialchars($video['title']); ?></a><br>
+                                        <a href="/watch?v=<?php echo $video['rid']; ?>"><?php echo $_video_fetch_utils->parse_title($video['title']);  ?></a><br>
                                         <span class="video-info-small">
                                             <span class="video-views"><?php echo $_video_fetch_utils->fetch_video_views($video['rid']); ?> views</span><br>
                                             <a href="/user/<?php echo htmlspecialchars($video['author']); ?>"><?php echo htmlspecialchars($video['author']); ?></a>
@@ -252,19 +340,20 @@
                             $result = $stmt->get_result();
                             while($video = $result->fetch_assoc()) {
                                 $video = $_video_fetch_utils->fetch_video_rid($video['reciever']);
+                                if($_video_fetch_utils->video_exists($video['rid'])) {
                         ?>
 
                                 <div class="grid-item" style="">
                                     <img class="thumbnail" src="/dynamic/thumbs/<?php echo htmlspecialchars($video['thumbnail']); ?>">
                                     <div class="video-info-grid">
-                                        <a href="/watch?v=<?php echo $video['rid']; ?>"><?php echo htmlspecialchars($video['title']); ?></a><br>
+                                        <a href="/watch?v=<?php echo $video['rid']; ?>"><?php echo $_video_fetch_utils->parse_title($video['title']);  ?></a><br>
                                         <span class="video-info-small">
                                             <span class="video-views"><?php echo $_video_fetch_utils->fetch_video_views($video['rid']); ?> views</span><br>
                                             <a href="/user/<?php echo htmlspecialchars($video['author']); ?>"><?php echo htmlspecialchars($video['author']); ?></a>
                                         </span>
                                     </div>
                                 </div>
-                        <?php } ?>
+                        <?php } } ?>
                     </div>
                 </div><br>
                 <?php } ?>
@@ -341,7 +430,7 @@
                         <hr class="thin-line">
                         <div class="comment-watch">
                             <img class="comment-pfp" src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($comment['author']); ?>">
-                            <span  style="display: inline-block; vertical-align: top;">
+                            <span  style="display: inline-block; vertical-align: top;width: 575px;">
                                 <span class="comment-info" style="display: inline-block;">
                                     <b><a style="text-decoration: none;" href="/user/<?php echo htmlspecialchars($comment['author']); ?>">
                                         <?php echo htmlspecialchars($comment['author']); ?> 
@@ -358,6 +447,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div id="channelbg">
+            &nbsp;
         </div>
         <div class="www-core-container">
         <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/module/footer.php"); ?>

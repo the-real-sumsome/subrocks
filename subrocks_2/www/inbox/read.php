@@ -15,21 +15,11 @@
     $_user_fetch_utils->initialize_db_var($conn);
     $_user_insert_utils->initialize_db_var($conn);
 ?>
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>SubRocks - <?php echo $_base_utils->return_current_page(); ?></title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/static/css/new/www-core.css">
-    </head>
-    <body>
-        <div class="www-core-container">
-            <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/module/header.php"); ?>
-            Template
-        </div>
-        <div class="www-core-container">
-        <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/module/footer.php"); ?>
-        </div>
+<?php
+    $stmt = $conn->prepare("UPDATE pms SET readed = 'y' WHERE touser = ?");
+    $stmt->bind_param("s", $_SESSION['siteusername']);
+    $stmt->execute();
+    $stmt->close();
 
-    </body>
-</html>
+    header("Location: index");
+?>

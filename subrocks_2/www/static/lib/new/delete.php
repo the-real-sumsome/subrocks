@@ -16,6 +16,13 @@ class user_delete_utils {
     function initialize_server_vars($server) {
         $this->server = $server;    
     }
+
+    function remove_comment_like($sender, $reciever) {
+        $stmt = $this->conn->prepare("DELETE FROM comment_likes WHERE sender = ? AND reciever = ?");
+        $stmt->bind_param("ss", $sender, $reciever);
+        $stmt->execute();
+        $stmt->close();
+    }
 }
 
 /**

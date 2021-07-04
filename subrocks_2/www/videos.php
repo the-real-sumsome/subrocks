@@ -51,20 +51,34 @@
                     </div>
                     <div class="videos-title-box-contents">
                             <?php
-                            $stmt56 = $conn->prepare("SELECT rid, title, thumbnail, duration, title, author, publish, description FROM videos WHERE category = ? ORDER BY id DESC");
-                            $stmt56->bind_param("s", $category);
-                            $stmt56->execute();
-                            $result854 = $stmt56->get_result();
-                            $result56 = $result854->num_rows;
+                            if($category != "None") { 
+                                $stmt56 = $conn->prepare("SELECT rid, title, thumbnail, duration, title, author, publish, description FROM videos WHERE category = ? ORDER BY id DESC");
+                                $stmt56->bind_param("s", $category);
+                                $stmt56->execute();
+                                $result854 = $stmt56->get_result();
+                                $result56 = $result854->num_rows;
+                            } else {
+                                $stmt56 = $conn->prepare("SELECT rid, title, thumbnail, duration, title, author, publish, description FROM videos ORDER BY id DESC");
+                                $stmt56->execute();
+                                $result854 = $stmt56->get_result();
+                                $result56 = $result854->num_rows;
+                            }
                             ?>
                             <?php
                             $results_per_page = 15;
 
-                            $stmt = $conn->prepare("SELECT rid, title, thumbnail, duration, title, author, publish, description FROM videos WHERE category = ? ORDER BY id DESC");
-                            $stmt->bind_param("s", $category);
-                            $stmt->execute();
-                            $result = $stmt->get_result();
-                            $results = $result->num_rows;
+                            if($category != "None") { 
+                                $stmt = $conn->prepare("SELECT rid, title, thumbnail, duration, title, author, publish, description FROM videos WHERE category = ? ORDER BY id DESC");
+                                $stmt->bind_param("s", $category);
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+                                $results = $result->num_rows;
+                            } else {
+                                $stmt = $conn->prepare("SELECT rid, title, thumbnail, duration, title, author, publish, description FROM videos ORDER BY id DESC");
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+                                $results = $result->num_rows;
+                            }
 
                             $number_of_result = $result->num_rows;
                             $number_of_page = ceil ($number_of_result / $results_per_page);  
@@ -79,10 +93,17 @@
 
                             $stmt->close();
 
-                            $stmt = $conn->prepare("SELECT rid, title, thumbnail, duration, title, author, publish, description FROM videos WHERE category = ? ORDER BY id DESC LIMIT ?, ?");
-                            $stmt->bind_param("sss", $category, $page_first_result, $results_per_page);
-                            $stmt->execute();
-                            $result = $stmt->get_result();
+                            if($category != "None") { 
+                                $stmt = $conn->prepare("SELECT rid, title, thumbnail, duration, title, author, publish, description FROM videos WHERE category = ? ORDER BY id DESC LIMIT ?, ?");
+                                $stmt->bind_param("sss", $category, $page_first_result, $results_per_page);
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+                            } else { 
+                                $stmt = $conn->prepare("SELECT rid, title, thumbnail, duration, title, author, publish, description FROM videos ORDER BY id DESC LIMIT ?, ?");
+                                $stmt->bind_param("ss", $page_first_result, $results_per_page);
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+                            }
 
                             while($video = $result->fetch_assoc()) { ?>
                             <div class="grid-item" style="animation: scale-up-recent 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;">

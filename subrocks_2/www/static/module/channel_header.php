@@ -1,8 +1,8 @@
 <div class="www-header-mast" style="background-color: white;margin-top: -10px;border-bottom-left-radius: 5px;
-border-bottom-right-radius: 5px;"><br>
+border-bottom-right-radius: 5px;padding-bottom: 16px;padding-right: 5px;"><br>
     <a href="/"><img src="/static/img/fulptube.png" class="www-logo"></a>
     <span class="www-motto" style="top: 18px;">
-    <a href="/videos">Videos</a> | <a href="/channels">Channels</a> | <a href="/commnunity">Community</a> | <a href="/upload_video">Upload</a>
+    <a href="/videos">Videos</a> | <a href="/channels">Channels</a> | <a href="/community">Community</a> | <a href="/upload_video">Upload</a>
     </span>
     <div class="www-user-info">
         <?php if(!isset($_SESSION['siteusername'])) { ?>

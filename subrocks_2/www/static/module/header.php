@@ -11,6 +11,7 @@
             <a class="" href="/sign_in">Sign In</a>
         <?php } else { ?>
             <?php echo htmlspecialchars($_SESSION['siteusername']); ?>
+            <a href="/logout">Logout</a> 
         <?php } ?>
     </div>
     <br>
@@ -38,7 +39,19 @@
 ?>
 
 <div class="alerts">
-    <div class="alert" style="display: none;" id="editsuccess">
-        Successfully updated your video!
+    <div class="alert" id="editsuccess">
+        BY THE WAY, THIS IS A BETA!!! THE DATABASE WILL BE RESET WHEN THE SITE RELEASES!
     </div>
+
+    <?php if(isset($_GET['userdoesntexist'])) { ?>
+    <div class="alert" id="userdoesntexist" style="background-color: #FFA3A3;">
+        This user does not exist!
+    </div>
+    <?php } ?>
+
+    <?php if(isset($_GET['videodoesntexist'])) { ?>
+    <div class="alert" id="videodoesntexist" style="background-color: #FFA3A3;">
+        This video does not exist!
+    </div>
+    <?php } ?>
 </div>

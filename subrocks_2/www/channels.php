@@ -143,7 +143,7 @@
 
                 <center>
                 <?php for($page = 1; $page<= $number_of_page; $page++) {  ?>
-                    <a href="channels?page=<?php echo $page ?>"><span class="yt-uix-button-content"><?php echo $page; ?></span></a>&nbsp;
+                    <a href="channels?page=<?php echo $page ?>"><?php echo $page; ?></a>&nbsp;
                 <?php } ?>
                 </center>  
             </div>

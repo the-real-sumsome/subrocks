@@ -61,10 +61,6 @@
                                 <td class="label"><label for="username"> Username :</label></td>
                             <td class="input"><input style="border: 1px solid #a0a0a0; padding: 3px;" name="username" type="text" required id="username"></td>
                             </tr>
-                            <tr class="email">
-                                <td class="label"><label for="email"> E-Mail: </label></td>
-                                <td class="input"><input style="border: 1px solid #a0a0a0; padding: 3px;" type="email" name="email" required id="email"></td>
-                            </tr>
                             <tr class="password">
                                 <td class="label"><label for="password"> Password: </label></td>
                                 <td class="input"><input style="border: 1px solid #a0a0a0; padding: 3px;" name="password" type="password" required id="password"></td>

@@ -1,21 +1,23 @@
 <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/important/config.inc.php"); ?>
 <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/lib/new/base.php"); ?>
 <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/lib/new/fetch.php"); ?>
-<?php require($_SERVER['DOCUMENT_ROOT'] . "/static/lib/new/insert.php"); ?>
 <?php
-    $_user_fetch_utils = new user_fetch_utils();
-    $_video_fetch_utils = new video_fetch_utils();
-    $_video_insert_utils = new video_insert_utils();
-    $_user_insert_utils = new user_insert_utils();
-    $_base_utils = new config_setup();
-    
-    $_base_utils->initialize_db_var($conn);
-    $_video_fetch_utils->initialize_db_var($conn);
-    $_video_insert_utils->initialize_db_var($conn);
-    $_user_fetch_utils->initialize_db_var($conn);
-    $_user_insert_utils->initialize_db_var($conn);
+  $_user_fetch_utils = new user_fetch_utils();
+  $_video_fetch_utils = new video_fetch_utils();
+  $_base_utils = new config_setup();
+ 
+  $_base_utils->initialize_db_var($conn);
+  $_video_fetch_utils->initialize_db_var($conn);
+  $_user_fetch_utils->initialize_db_var($conn);
 
-  $_base_utils->initialize_page_compass("Homepage");
+  $search = "%" . htmlspecialchars($_GET['q']) . "%";
+  $stmt56 = $conn->prepare("SELECT * FROM videos WHERE lower(title) LIKE lower(?) ");
+  $stmt56->bind_param("s", $search);
+  $stmt56->execute();
+  $result854 = $stmt56->get_result();
+  $result56 = $result854->num_rows;
+
+  $_base_utils->initialize_page_compass(htmlspecialchars($_GET['q']));
 ?>
 <!DOCTYPE html>
 <html>
@@ -27,81 +29,121 @@
     <body>
         <div class="www-core-container">
             <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/module/header.php"); ?>
-            <div class="www-home-left">
-                <h2>Recently Viewed Videos</h2><br>
-                <div class="grid-view">
-                    <?php
-                    $stmt = $conn->prepare("SELECT video FROM history ORDER BY id DESC LIMIT 4");
+            <h1><?php echo htmlspecialchars($_GET['q']); ?></h1>
+            About <strong><?php echo number_format($result56); ?></strong> results<br><br>
+            <?php
+                $results_per_page = 20;
+
+                if(!isset($_GET['lclk'])) { 
+                    $stmt = $conn->prepare("SELECT * FROM videos WHERE lower(title) LIKE lower(?) ");
+                    $stmt->bind_param("s", $search);
                     $stmt->execute();
                     $result = $stmt->get_result();
-                    while($video = $result->fetch_assoc()) { 
-                        $video = $_video_fetch_utils->fetch_video_rid($video['video']);
-                        if($_video_fetch_utils->video_exists($video['rid'])) { 
-                    ?> 
-                    <div class="grid-item" style="animation: scale-up-recent 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;">
-                        <img class="thumbnail" src="/dynamic/thumbs/<?php echo htmlspecialchars($video['thumbnail']); ?>">
-                        <div class="video-info-grid">
-                            <a href="/watch?v=<?php echo $video['rid']; ?>"><?php echo htmlspecialchars($video['title']); ?></a><br>
-                            <span class="video-info-small">
-                                <span class="video-views"><?php echo $_video_fetch_utils->fetch_video_views($video['rid']); ?> views</span><br>
-                                <a href="/user/<?php echo htmlspecialchars($video['author']); ?>"><?php echo htmlspecialchars($video['author']); ?></a>
-                            </span>
-                        </div>
-                    </div>
-                    <?php } } ?>
-                </div>
-                <hr class="thin-line">
-                <h2 style="display: inline-block;">Featured Videos</h2>
-                <h3 class="featured-videos-text"><a href="/search?f=featured">See More Featured Videos</a></h3>
-                <hr class="thin-line">
-                <br>
-                <?php
-                    $stmt = $conn->prepare("SELECT rid, title, thumbnail, duration, title, author, publish, description FROM videos WHERE featured = 'v' ORDER BY id DESC LIMIT 12");
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    while($video = $result->fetch_assoc()) { 
-                        $video['stars'] = $_video_fetch_utils->get_video_stars($video['rid']);
-                        $video['star_1'] = $_video_fetch_utils->get_video_stars_level($video['rid'], 1);
-                        $video['star_2'] = $_video_fetch_utils->get_video_stars_level($video['rid'], 2);
-                        $video['star_3'] = $_video_fetch_utils->get_video_stars_level($video['rid'], 3);
-                        $video['star_4'] = $_video_fetch_utils->get_video_stars_level($video['rid'], 4);
-                        $video['star_5'] = $_video_fetch_utils->get_video_stars_level($video['rid'], 5);
-                    
-                        //@$video['star_ratio'] = ($video['star_1'] + $video['star_2'] + $video['star_3'] + $video['star_4'] + $video['star_5']) / $video['stars'];
-                    
-                        /* 
-                            5 star - 252
-                            4 star - 124
-                            3 star - 40
-                            2 star - 29
-                            1 star - 33
-                    
-                            totally 478 
-                    
-                            (252*5 + 124*4 + 40*3 + 29*2 + 33*1) / (252 + 124 + 40 + 29 + 33)
-                        */
-                    
-                        if($video['stars'] != 0) {
-                            @$video['star_ratio'] = (
-                                $video['star_5'] * 5 + 
-                                $video['star_4'] * 4 + 
-                                $video['star_3'] * 3 + 
-                                $video['star_2'] * 2 + 
-                                $video['star_1'] * 1
-                            ) / (
-                                $video['star_5'] + 
-                                $video['star_4'] + 
-                                $video['star_3'] + 
-                                $video['star_2'] + 
-                                $video['star_1']
-                            );
-                    
-                            $video['star_ratio'] = floor($video['star_ratio'] * 2) / 2;
-                        } else { 
-                            $video['star_ratio'] = 0;
-                        }
-                ?> 
-                <div class="video-item">
+                    $results = $result->num_rows;
+                } else {
+                    if($_GET['lclk'] == "this_week") { 
+                        $stmt = $conn->prepare("SELECT * FROM videos WHERE `publish` >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND lower(title) LIKE lower(?) ");
+                        $stmt->bind_param("s", $search);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        $results = $result->num_rows;
+                    } else if($_GET['lclk'] == "this_month") {
+                        $stmt = $conn->prepare("SELECT * FROM videos WHERE `publish` >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND lower(title) LIKE lower(?) ");
+                        $stmt->bind_param("s", $search);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        $results = $result->num_rows;
+                    } else if($_GET['lclk'] == "today") {
+                        $stmt = $conn->prepare("SELECT * FROM videos WHERE `publish` >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND lower(title) LIKE lower(?) ");
+                        $stmt->bind_param("s", $search);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        $results = $result->num_rows;
+                    }
+                }
+
+
+                $number_of_result = $result->num_rows;
+                $number_of_page = ceil ($number_of_result / $results_per_page);  
+
+                if (!isset ($_GET['page']) ) {  
+                    $page = 1;  
+                } else {  
+                    $page = (int)$_GET['page'];  
+                }  
+
+                $page_first_result = ($page - 1) * $results_per_page;  
+
+                $stmt->close();
+                //WHERE date >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY
+                //AND date < curdate() - INTERVAL DAYOFWEEK(curdate())-1 DAY
+                if(!isset($_GET['lclk'])) { 
+                    $stmt6 = $conn->prepare("SELECT * FROM videos WHERE lower(title) LIKE lower(?)  ORDER BY id DESC LIMIT ?, ?");
+                    $stmt6->bind_param("sss", $search, $page_first_result, $results_per_page);
+                    $stmt6->execute();
+                    $result6 = $stmt6->get_result();
+                } else {
+                    if($_GET['lclk'] == "this_week") { 
+                    $stmt6 = $conn->prepare("SELECT * FROM videos WHERE `publish` >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND lower(title) LIKE lower(?)  ORDER BY id DESC LIMIT ?, ?");
+                    $stmt6->bind_param("sss", $search, $page_first_result, $results_per_page);
+                    $stmt6->execute();
+                    $result6 = $stmt6->get_result();
+                    } else if($_GET['lclk'] == "this_month") {
+                    $stmt6 = $conn->prepare("SELECT * FROM videos WHERE `publish` >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND lower(title) LIKE lower(?)  ORDER BY id DESC LIMIT ?, ?");
+                    $stmt6->bind_param("sss", $search, $page_first_result, $results_per_page);
+                    $stmt6->execute();
+                    $result6 = $stmt6->get_result();
+                    } else if($_GET['lclk'] == "today") {
+                    $stmt6 = $conn->prepare("SELECT * FROM videos WHERE `publish` >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND lower(title) LIKE lower(?)  ORDER BY id DESC LIMIT ?, ?");
+                    $stmt6->bind_param("sss", $search, $page_first_result, $results_per_page);
+                    $stmt6->execute();
+                    $result6 = $stmt6->get_result();
+                    }
+                }
+
+                while($video = $result6->fetch_assoc()) { 
+                    $video['stars'] = $_video_fetch_utils->get_video_stars($video['rid']);
+                    $video['star_1'] = $_video_fetch_utils->get_video_stars_level($video['rid'], 1);
+                    $video['star_2'] = $_video_fetch_utils->get_video_stars_level($video['rid'], 2);
+                    $video['star_3'] = $_video_fetch_utils->get_video_stars_level($video['rid'], 3);
+                    $video['star_4'] = $_video_fetch_utils->get_video_stars_level($video['rid'], 4);
+                    $video['star_5'] = $_video_fetch_utils->get_video_stars_level($video['rid'], 5);
+                
+                    //@$video['star_ratio'] = ($video['star_1'] + $video['star_2'] + $video['star_3'] + $video['star_4'] + $video['star_5']) / $video['stars'];
+                
+                    /* 
+                        5 star - 252
+                        4 star - 124
+                        3 star - 40
+                        2 star - 29
+                        1 star - 33
+                
+                        totally 478 
+                
+                        (252*5 + 124*4 + 40*3 + 29*2 + 33*1) / (252 + 124 + 40 + 29 + 33)
+                    */
+                
+                    if($video['stars'] != 0) {
+                        @$video['star_ratio'] = (
+                            $video['star_5'] * 5 + 
+                            $video['star_4'] * 4 + 
+                            $video['star_3'] * 3 + 
+                            $video['star_2'] * 2 + 
+                            $video['star_1'] * 1
+                        ) / (
+                            $video['star_5'] + 
+                            $video['star_4'] + 
+                            $video['star_3'] + 
+                            $video['star_2'] + 
+                            $video['star_1']
+                        );
+                
+                        $video['star_ratio'] = floor($video['star_ratio'] * 2) / 2;
+                    } else { 
+                        $video['star_ratio'] = 0;
+                    }
+                    ?>
+                     <div class="video-item">
                     <div class="thumbnail" style="
                         background-image: url(/dynamic/thumbs/<?php echo $video['thumbnail']; ?>), url('/dynamic/thumbs/default.png');"><span class="timestamp"><?php echo $_video_fetch_utils->timestamp($video['duration']); ?></span></div>
                     
@@ -196,25 +238,10 @@
                     
                 </div>
                 <?php } ?>
-            </div>
-            <div class="www-home-right">
-                <div class="benifits-outer-front">
-                    <div class="benifits-inner-front">
-                        <b>Want to upload videos?</b><br>
-                        <a href="/sign_up">Sign up for a SubRocks Account</a>
-                    </div>
-                </div><br>
-                <div class="whats-new">
-                    <h3>What's New</h3>
-                    <p class="whats-new-text">
-                        SubRocks is out! If you're seeing this... This is a YouTube recreation during 2009. SubRocks welcomes anyone.<br><br><b>Have fun!</b>
-                    </p>
-                    <h3>Contests</h3>
-                    <p class="whats-new-text">
-                        We're planning to make people submit contest submissions and participate in video contests. Winners recieve a shoutout on the front page on the site!
-                    </p>
-                </div>
-            </div>
+            
+                <?php for($page = 1; $page<= $number_of_page; $page++) { ?>
+                <a href="search_query?q=<?php echo htmlspecialchars($_GET['q']); ?>&page=<?php echo $page ?>"><?php echo $page; ?></a>&nbsp;
+                <?php } ?>    
         </div>
         <div class="www-core-container">
         <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/module/footer.php"); ?>

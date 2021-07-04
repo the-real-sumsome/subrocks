@@ -1,22 +1,23 @@
 <style>
 #sidebar-item { 
-    padding: 14px;
+  padding: 7px;
   text-align: left;
-  background-color: whitesmoke;
-  border: 1px solid #CACACA;
 }
 
 #sidebar-extra { 
   padding: 10px;
   text-align: left;
-  background-color: whitesmoke;
-  border: 1px solid #CACACA;
   height: 963px;
 }
 
 #sidebar-item:hover {
   background-color: white;
   font-weight: bold;
+  background: rgb(215,215,215);
+  background: -moz-linear-gradient(0deg, rgba(215,215,215,1) 0%, rgba(236,236,236,1) 100%);
+  background: -webkit-linear-gradient(0deg, rgba(215,215,215,1) 0%, rgba(236,236,236,1) 100%);
+  background: linear-gradient(0deg, rgba(215,215,215,1) 0%, rgba(236,236,236,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#d7d7d7",endColorstr="#ececec",GradientType=1); 
 }
 
 #sidebar-item a {
@@ -27,6 +28,8 @@ ul {
     list-style-type: none;
     margin: 0px;
     padding: 0px;
+    border-right: 1px solid #CACACA;
+    border-top: 1px solid #CACACA;
 }
 
 li a {
@@ -38,12 +41,8 @@ li a {
 <br><br>
 <center>
 <ul style="width: 193px;">
-    <li id="sidebar-item" class="video-manager-upload">
-        <center>
-            <a href="upload_video">
-                <button style="width: 66%" class="www-button www-button-grey">Upload</button>
-            </a>
-        </center>
+    <li id="sidebar-item">
+      <a href="/inbox/send"><button style="padding: 2px .8333em;float: none;margin-left: 48px;" id="search-button">Compose</button></a>
     </li>
     <li id="sidebar-item">
       <a href="/favorites">Favorites</a>
@@ -59,6 +58,9 @@ li a {
     </li>
     <li id="sidebar-item">
       <a href="/subscriptions">My Subscriptions</a>
+    </li>
+    <li id="sidebar-item">
+      <a href="/inbox/">Inbox</a>
     </li>
     <li id="sidebar-extra">
       

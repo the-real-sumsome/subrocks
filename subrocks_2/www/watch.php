@@ -15,6 +15,12 @@
     $_user_fetch_utils->initialize_db_var($conn);
     $_user_insert_utils->initialize_db_var($conn);
 
+    if(!$_video_fetch_utils->video_exists($_GET['v']))
+        header("Location: /?videodoesntexist");
+
+    if(!isset($_GET['v']))
+        header("Location: /?videodoesntexist");
+
     // Cannot use a scalar value as an array ....? This worked in PHP 8 but doesn't in PHP 7.4 for some reason..... Oh well!
     //error_reporting(E_ERROR | E_PARSE);
     $_video = $_video_fetch_utils->fetch_video_rid($_GET['v']);
@@ -25,6 +31,7 @@
     $_video['subscribed'] = $_user_fetch_utils->if_subscribed(@$_SESSION['siteusername'], $_video['author']);
     $_video['favorited'] = $_user_fetch_utils->if_favorited(@$_SESSION['siteusername'], $_video['rid']);
     $_video['liked'] = $_user_fetch_utils->if_liked_video(@$_SESSION['siteusername'], $_video['rid']);
+    $_video['video_responses'] = $_video_fetch_utils->get_video_responses($_video['rid']);
 
     $_video['stars'] = $_video_fetch_utils->get_video_stars($_GET['v']);
     $_video['star_1'] = $_video_fetch_utils->get_video_stars_level($_GET['v'], 1);
@@ -195,6 +202,9 @@
                     <a href="/get/star?v=<?php echo $_video['rid']; ?>&rating=4"><img src="/static/img/full_star.png"></a>
                     <a href="/get/star?v=<?php echo $_video['rid']; ?>&rating=5"><img src="/static/img/full_star.png"></a>
                     <?php } ?>
+                    <span style="font-size: 11px; color: gray;vertical-align: middle;">
+                    <?php echo $_video['stars']; ?> ratings
+                    </span>
                     <div class="video-views-watch">
                         <b>Views:</b> <?php echo $_video_fetch_utils->fetch_video_views($_video['rid']); ?>
                     </div><br><br>
@@ -284,6 +294,36 @@
                     </div>
                 </div><br>
                 <div class="watch-main-info">
+                    <?php if($_video['video_responses'] != 0) { ?>
+                        <button type="button" class="collapsible active-dropdown"><img class="www-right-arrow" id="arrow_more">Video Responses (<?php echo $_video['video_responses']; ?>)</button>
+                        <div class="content" style="display: block;">
+                            <?php 
+                                $stmt = $conn->prepare("SELECT * FROM video_response WHERE toid = ? ORDER BY id DESC LIMIT 4");
+                                $stmt->bind_param("s", $_GET['v']);
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+                                while($video = $result->fetch_assoc()) { 
+                                    if($_video_fetch_utils->video_exists($video['video'])) { 
+                                        $vRid = $video['id'];
+                                        $video = $_video_fetch_utils->fetch_video_rid($video['video']);
+                            ?>
+                                <div class="grid-item" style="animation: scale-up-recent 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;">
+                                    <img class="thumbnail" src="/dynamic/thumbs/<?php echo htmlspecialchars($video['thumbnail']); ?>">
+                                    <div class="video-info-grid">
+                                        <a href="/watch?v=<?php echo $video['rid']; ?>"><?php echo htmlspecialchars($video['title']); ?></a><br>
+                                        <span class="video-info-small">
+                                            <span class="video-views"><?php echo $_video_fetch_utils->fetch_video_views($video['rid']); ?> views</span><br>
+                                            <a href="/user/<?php echo htmlspecialchars($video['author']); ?>"><?php echo htmlspecialchars($video['author']); ?></a>
+                                        </span>
+                                    </div>
+                                    <?php if(@$_SESSION['siteusername'] == $_video['author']) { ?>
+                                        <br><a href="/get/delete_video_response?id=<?php echo $vRid; ?>"><button>Delete</button></a>
+                                    <?php } ?>
+                                </div>
+                            <?php } } ?>
+                        </div><br>
+                    <?php } ?>
+
                     <?php 
                         $stmt = $conn->prepare("SELECT * FROM comments WHERE toid = ? ORDER BY id DESC");
                         $stmt->bind_param("s", $_GET['v']);
@@ -312,6 +352,7 @@
                                     class="comment-textbox" cols="32" id="com" style="width: 98%;"
                                     placeholder="Respond to this video" name="comment"></textarea><br><br> 
                                 <input disabled class="characters-remaining" maxlength="3" size="3" value="500" id="counter"> <?php if(!isset($cLang)) { ?> characters remaining <?php } else { echo $cLang['charremaining']; } ?> 
+                                <span style="float: right;"><a href="/add_video_response?v=<?php echo $_video['rid']; ?>">Add a Video Response</a></span>
                                 <input type="submit" value="Post" class="g-recaptcha" data-sitekey="<?php echo $config['recaptcha_sitekey']; ?>" data-callback="onLogin">
                                 <script>
                                 function textCounter(field,field2,maxlimit) {
@@ -326,7 +367,9 @@
                                 </script>
                         </form>
                     <?php } ?><br>
-                    <?php while($comment = $result->fetch_assoc()) {  ?>
+                    <?php while($comment = $result->fetch_assoc()) {  
+                        $comment['likes'] = $_video_fetch_utils->fetch_comment_likes($comment['id']) - $_video_fetch_utils->fetch_comment_dislikes($comment['id']);
+                        ?>
                         <hr class="thin-line">
                         <div class="comment-watch">
                             <span class="comment-info">
@@ -334,6 +377,18 @@
                                     <?php echo htmlspecialchars($comment['author']); ?> 
                                 </a></b> 
                                 <span style="color: #666;">(<?php echo $_video_fetch_utils->time_elapsed_string($comment['date']); ?>)</span>
+
+                                <span style="float:right; display: inline-block;">
+                                    <span class="comment-likes"><?php echo $comment['likes']; ?></span>
+
+                                    <a href="/get/like_comment?id=<?php echo $comment['id']; ?>">
+                                        <button class="like-comment"></button>
+                                    </a> 
+                                    
+                                    <a href="/get/dislike_comment?id=<?php echo $comment['id']; ?>">
+                                        <button class="dislike-comment"></button>
+                                    </a>
+                                </span>
                             </span><br>
                             <span class="comment-text">
                                 <?php echo $_video_fetch_utils->parseTextDescription($comment['comment']); ?>
@@ -366,7 +421,7 @@
                     <div class="video-info-full" style="display: none;">
                         <?php echo $_video_fetch_utils->parseTextDescription($_video['description']); ?><br><br>
                         <span class="video-expanded-category">
-                            <span class="grey-text">Category: </span> <a href="#"><?php echo htmlspecialchars($_video['category']); ?></a><br>
+                            <span class="grey-text">Category: </span> <a href="/videos?c=<?php echo htmlspecialchars(urlencode($_video['category']));?>"><?php echo htmlspecialchars($_video['category']); ?></a><br>
                             <span class="grey-text">Tags: </span> <a href="#"><?php echo htmlspecialchars($_video['tags']); ?></a>
                         </span>
                     </div>
@@ -439,9 +494,13 @@
                         this.classList.toggle("active-dropdown");
                         var content = this.nextElementSibling;
                         if (content.style.display === "block") {
-                        content.style.display = "none";
+                            content.style.display = "none";
+                            content.style.backgroundPosition = "0 -342px";
+
+                            //background-position: ;
                         } else {
-                        content.style.display = "block";
+                            content.style.display = "block";
+                            content.style.backgroundPosition = "0 -322px";
                         }
                     });
                 }

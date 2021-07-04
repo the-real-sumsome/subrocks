@@ -58,6 +58,13 @@ class user_insert_utils {
         $stmt->execute();
         $stmt->close();
     }    
+
+    function add_comment_dislike($sender, $reciever) {
+        $stmt = $this->conn->prepare("INSERT INTO comment_likes (sender, reciever, type) VALUES (?, ?, 'd')");
+        $stmt->bind_param("ss", $sender, $reciever);
+        $stmt->execute();
+        $stmt->close();
+    }
 }
 
 /**
