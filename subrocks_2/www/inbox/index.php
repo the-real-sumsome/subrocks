@@ -105,17 +105,17 @@
 
                             while($row6 = $result6->fetch_assoc()) { ?>
                             <tr>
-                                <td><?php echo htmlspecialchars($row6['owner']); ?></td>
+                                <td><a style="text-decoration: none;" href="/user/<?php echo htmlspecialchars($row6['owner']); ?>"><img src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($row6['owner']); ?>" style="vertical-align: middle;width: 16px;height: 16px;"> <?php echo htmlspecialchars($row6['owner']); ?></a></td>
                                 <td><a href="view?id=<?php echo $row6['id']; ?>"><?php echo htmlspecialchars($row6['subject']); ?></a></td>
                                 <td><?php echo date("Y-m-d", strtotime($row6['date'])); ?></td>
                             </tr>
                             <?php } ?>
                         </table><br><br>
                         <center>
-                        <?php
-                                for($page = 1; $page<= $number_of_page; $page++) {  ?>
-<a href="index?page=<?php echo $page ?>"><?php echo $page; ?></a>&nbsp;
-<?php } ?>    </center>
+                        <?php for($page = 1; $page<= $number_of_page; $page++) { ?>
+                        <a href="index?page=<?php echo $page ?>"><?php echo $page; ?></a>&nbsp;
+                        <?php } ?>    
+                        </center>
                         </div>
                     </div>
         </div>

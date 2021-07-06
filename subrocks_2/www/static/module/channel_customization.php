@@ -69,7 +69,7 @@ function bg_table() {
                 </form><br><br>
 
                 <h1>Featured Video</h1>
-                Must not have extra whitespace/spaces at the end. Example: MTYwNTQ4ODc4Mja=24 is valid. DO NOT INCLUDE THE FULPTUBE.ROCKS LINK, JUST THE ID<br>
+                Must not have extra whitespace/spaces at the end. Example: MTYwNTQ4ODc4Mja=24 is valid. DO NOT INCLUDE THE SITE DOMAIN, JUST THE ID<br>
                 <form method="post" action="/post/channel_update" enctype="multipart/form-data">
                 <input style="padding:5px;border-radius:5px;background-color:white;border: 1px solid #d3d3d3;width: 345px;" id="biomd" placeholder="Video ID" value="<?php echo htmlspecialchars($_user['featured']);?>" name="videoid">
                     <input class="yt-uix-button yt-uix-button-default" name="featuredset" type="submit" value="Set">

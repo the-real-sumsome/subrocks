@@ -20,11 +20,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tags = @$_POST['tags'];
     $category = @$_POST['category'];
 
+    echo $title;
+    echo $description;
+
     if(!empty($title)) { 
         $stmt = $conn->prepare("UPDATE videos SET title = ? WHERE `videos`.`rid` = ?;");
         $stmt->bind_param("ss", $title, $_GET['id']);
         $stmt->execute();
         $stmt->close();
+
+        echo "test!";
     }
 
     if(!empty($description)) { 
@@ -32,6 +37,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param("ss", $description, $_GET['id']);
         $stmt->execute();
         $stmt->close();
+
+        echo "test1!";
     }
 
     if(!empty($tags)) { 
@@ -39,6 +46,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param("ss", $tags, $_GET['id']);
         $stmt->execute();
         $stmt->close();
+        
+        echo "test2!";
     }
 
     if(!empty($category)) { 
@@ -46,6 +55,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param("ss", $category, $_GET['id']);
         $stmt->execute();
         $stmt->close();
+
+        echo "test3!";
     }
 
     if(!empty($_FILES["fileToUpload"]["name"])) {

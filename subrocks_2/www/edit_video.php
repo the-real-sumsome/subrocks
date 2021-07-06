@@ -47,7 +47,9 @@
             <script src="/static/js/alert.js"></script>
             <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/module/module_sidebar.php"); ?>
             <div class="manage-top">
-                <h1><?php echo htmlspecialchars($_video['title']); ?></h1>
+                <div style="width: 100%;border-top: 1px solid #CACACA;border-bottom: 1px solid #CACACA;">
+                    <h3 style="margin-top: 0px;padding: 16px;"><?php echo htmlspecialchars($_video['title']); ?></h3>
+                </div>
             </div>
             <div class="manage-base">
                 <form method="post" action="/post/edit_video?id=<?php echo $_video['rid']; ?>" enctype="multipart/form-data" id="submitform">
@@ -152,7 +154,7 @@
             var alerts = 0; 
             $('#submitform' ).submit(
                 function( e ) {
-                    var data = new FormData();
+                    var data = new FormData(this);
                     jQuery.each(jQuery('#fileToUpload')[0].files, function(i, file) {
                         data.append('file-'+i, file);
                     });
@@ -163,12 +165,12 @@
                         data: data,
                         cache: false,
                         processData: false,
-                        enctype: 'multipart/form-data',
                         contentType: false,
                         success: function(result){
                             alerts++;
                             addAlert("editsuccess_" + alerts, "Successfully updated your video!");
                             showAlert("#editsuccess_" + alerts);
+                            console.log("DEBUG: " + result);
                         }
                     } );
                     e.preventDefault();

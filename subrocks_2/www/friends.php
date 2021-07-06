@@ -63,12 +63,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && @$_POST['send']) {
             <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/module/module_sidebar.php"); ?>
             <div class="manage-top">
                 <div style="width: 100%;border-top: 1px solid #CACACA;border-bottom: 1px solid #CACACA;">
-                    <h3 style="margin-top: 0px;padding: 16px;">Video Manager</h3>
+                    <h3 style="margin-top: 0px;padding: 16px;">Friends</h3>
                 </div>
             </div>
+            <div class="manage-base">
                 <?php
                     $search = $_SESSION['siteusername'];
-                    $stmt56 = $conn->prepare("SELECT * FROM videos WHERE author = ? AND visibility = 'v'");
+                    $stmt56 = $conn->prepare("SELECT * FROM friends WHERE sender = ? AND (status != 'a' AND status != 'd')");
                     $stmt56->bind_param("s", $search);
                     $stmt56->execute();
                     $result854 = $stmt56->get_result();
@@ -76,7 +77,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && @$_POST['send']) {
 
                     $results_per_page = 12;
 
-                    $stmt = $conn->prepare("SELECT * FROM videos WHERE author = ? ORDER BY id DESC");
+                    $stmt = $conn->prepare("SELECT * FROM friends WHERE sender = ? AND (status != 'a' AND status != 'd') ORDER BY id DESC");
                     $stmt->bind_param("s", $_SESSION['siteusername']);
                     $stmt->execute();
                     $result = $stmt->get_result();
@@ -95,7 +96,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && @$_POST['send']) {
 
                     $stmt->close();
                 ?>
-            <div class="manage-base">
+
+                <h3>Outgoing Friend Requests</h3>
                 <table style="width: 100%;">
                     <tr>
                         <!-- <th style="margin: 5px; width: 5%;"></th> -->
@@ -103,63 +105,78 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && @$_POST['send']) {
                         <th style="margin: 5px; width: 20%;"></th>
                     </tr>
                     <?php
-                        $stmt6 = $conn->prepare("SELECT * FROM videos WHERE author = ? ORDER BY id DESC LIMIT ?, ?");
+                        $stmt6 = $conn->prepare("SELECT * FROM friends WHERE sender = ? AND (status != 'a' AND status != 'd') ORDER BY id DESC LIMIT ?, ?");
                         $stmt6->bind_param("sss", $search, $page_first_result, $results_per_page);
                         $stmt6->execute();
                         $result6 = $stmt6->get_result();
 
-                        while($row = $result6->fetch_assoc()) { 
-                            if($row['thumbnail'] == ".png" && $row['filename'] == ".mp4") {
-                                $status = "Corrupted";
-                            } else if($row['visibility'] == "v") {
-                                $status = "Approved";
-                            } else if($row['visibility'] == "n") {
-                                $status = "Approved";
-                            } else if($row['visibility'] == "o") {
-                                $status = "Disapproved";
-                            } else {
-                                $status = "Unknown";
-                            }                            
+                        while($friend = $result6->fetch_assoc()) {           
                     ?> 
                     <tr style="margin-top: 5px;" id="videoslist">
                         <td class="video-manager-left">
-                            <span style="display: inline-block;float: right;"></span>
-                            <div class="video-thumbnail r120" 
-                            style="background-image: url('/dynamic/thumbs/<?php echo $row['thumbnail']; ?>'), url('/dynamic/thumbs/default.png');">
-                            <div class="video-timestamp">
-                                <span>
-                                <?php echo $_video_fetch_utils->timestamp($row['duration']); ?>
-                                </span>
-                            </div>
-                        </div>
-                            <span class="video-manager-info">
-                            <a class="video-manager-title" href="watch?v=<?php echo $row['rid']; ?>"><?php echo htmlspecialchars($row['title']); ?></a>
-                            <span class="video-manager-status"><?php echo $status; ?></span>
-                            <br>
-                            <span style="color: #919191;"><?php echo date("F d, Y g:sA", strtotime($row['publish'])); ?></span><br>
-                            <a href="edit_video?id=<?php echo $row['rid']; ?>">
-                                <button type="button" class=" www-button www-button-grey" role="button">
-                                    Edit
-                                </button>
-                            </a>
-                            <br>         
+                            <a style="text-decoration: none;" href="/user/<?php echo htmlspecialchars($friend['reciever']); ?>"><img src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($friend['reciever']); ?>" style="vertical-align: middle;width: 16px;height: 16px;"> <?php echo htmlspecialchars($friend['reciever']); ?></a>
                         </td>
                         <td class="video-manager-stats">
-                            <span class="video-manager-span">
-                                <img src="/static/img/views.png" class="video-manager-icon"> <?php echo $_video_fetch_utils->fetch_video_views($row['rid']); ?><br>
-                            </span>
+                            <a href="/get/reject_friend_request?id=<?php echo $friend['id']; ?>">Revoke</a><br>
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </table> 
+                <?php for($page = 1; $page<= $number_of_page; $page++) { ?>
+                    <a href="video_manager?page=<?php echo $page ?>">
+                        <button class="www-button www-button-grey"><?php echo $page; ?></button>
+                    </a>
+                <?php } ?>   
+                <?php
+                    $stmt56 = $conn->prepare("SELECT * FROM friends WHERE reciever = ? AND (status != 'a' AND status != 'd')");
+                    $stmt56->bind_param("s", $search);
+                    $stmt56->execute();
+                    $result854 = $stmt56->get_result();
+                    $result56 = $result854->num_rows;
 
-                            <span class="video-manager-span">
-                                <img src="/static/img/like_video_manager.png" class="video-manager-icon"> <?php echo $_video_fetch_utils->get_video_likes($row['rid']); ?><br>
-                            </span>
+                    $results_per_page = 12;
 
-                            <span class="video-manager-span">
-                                <img src="/static/img/dislike_video_manager.png" class="video-manager-icon"> <?php echo $_video_fetch_utils->get_video_dislikes($row['rid']); ?>
-                            </span>
+                    $stmt = $conn->prepare("SELECT * FROM friends WHERE reciever = ? AND (status != 'a' AND status != 'd') ORDER BY id DESC");
+                    $stmt->bind_param("s", $_SESSION['siteusername']);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $results = $result->num_rows;
 
-                            <span class="video-manager-span">
-                                <img src="/static/img/comments_video_manager.png" class="video-manager-icon"> <?php echo $_video_fetch_utils->get_comments_from_video($row['rid']); ?>
-                            </span>
+                    $number_of_result = $result->num_rows;
+                    $number_of_page = ceil ($number_of_result / $results_per_page);  
+
+                    if (!isset ($_GET['page']) ) {  
+                        $page = 1;  
+                    } else {  
+                        $page = (int)$_GET['page'];  
+                    }  
+
+                    $page_first_result = ($page - 1) * $results_per_page;  
+
+                    $stmt->close();
+                ?><br><br>
+                <h3>Incoming Friend Requests</h3>
+                <table style="width: 100%;">
+                    <tr>
+                        <!-- <th style="margin: 5px; width: 5%;"></th> -->
+                        <th style="width: 80%;"></th>
+                        <th style="margin: 5px; width: 20%;"></th>
+                    </tr>
+                    <?php
+                        $stmt6 = $conn->prepare("SELECT * FROM friends WHERE reciever = ? AND (status != 'a' AND status != 'd') ORDER BY id DESC LIMIT ?, ?");
+                        $stmt6->bind_param("sss", $search, $page_first_result, $results_per_page);
+                        $stmt6->execute();
+                        $result6 = $stmt6->get_result();
+
+                        while($friend = $result6->fetch_assoc()) {           
+                    ?> 
+                    <tr style="margin-top: 5px;" id="videoslist">
+                        <td class="video-manager-left">
+                            <a style="text-decoration: none;" href="/user/<?php echo htmlspecialchars($friend['sender']); ?>"><img src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($friend['sender']); ?>" style="vertical-align: middle;width: 16px;height: 16px;"> <?php echo htmlspecialchars($friend['sender']); ?></a>
+                        </td>
+                        <td class="video-manager-stats">
+                            <a href="/get/deny_friend_request?id=<?php echo $friend['id']; ?>">Deny</a><br>
+                            <a href="/get/accept_friend_request?id=<?php echo $friend['id']; ?>">Accept</a><br>
                         </td>
                     </tr>
                     <?php } ?>

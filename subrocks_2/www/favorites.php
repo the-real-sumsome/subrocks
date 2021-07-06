@@ -21,13 +21,40 @@
         <title>SubRocks - <?php echo $_base_utils->return_current_page(); ?></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/static/css/new/www-core.css">
+        <style>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            td, th {
+                text-align: left;
+                padding: 3px;
+            }
+
+            th {
+                border: 1px solid #dddddd;
+                background: rgb(230,230,230);
+                background: -moz-linear-gradient(0deg, rgba(230,230,230,1) 0%, rgba(255,255,255,1) 100%, rgba(255,255,255,1) 100%);
+                background: -webkit-linear-gradient(0deg, rgba(230,230,230,1) 0%, rgba(255,255,255,1) 100%, rgba(255,255,255,1) 100%);
+                background: linear-gradient(0deg, rgba(230,230,230,1) 0%, rgba(255,255,255,1) 100%, rgba(255,255,255,1) 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e6e6e6",endColorstr="#ffffff",GradientType=1); 
+            }
+
+            tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+        </style>
     </head>
     <body>
         <div class="www-core-container">
             <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/module/header.php"); ?>
             <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/module/module_sidebar.php"); ?>
             <div class="manage-top">
-                <h1>Favorites</h1>
+                <div style="width: 100%;border-top: 1px solid #CACACA;border-bottom: 1px solid #CACACA;">
+                    <h3 style="margin-top: 0px;padding: 16px;">Favorites</h3>
+                </div>
             </div>
                 <?php
                     $search = $_SESSION['siteusername'];

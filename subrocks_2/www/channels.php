@@ -10,7 +10,7 @@
     $_video_fetch_utils->initialize_db_var($conn);
     $_user_fetch_utils->initialize_db_var($conn);
 
-    $_base_utils->initialize_page_compass("Videos");
+    $_base_utils->initialize_page_compass("Channels");
 
     $category = "None";
 

@@ -28,6 +28,32 @@
         <div class="www-core-container">
             <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/module/header.php"); ?>
             <div class="www-home-left">
+                <?php if(isset($_SESSION['siteusername'])) { ?>
+                    <h2>Subscribed Channels</h2><br>
+                    <div class="grid-view">
+                        <?php
+                        $stmt = $conn->prepare("SELECT rid, title, thumbnail, duration, title, author, publish, description FROM videos ORDER BY id DESC LIMIT 250");
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        $i = 0;
+                        while($video = $result->fetch_assoc()) { 
+                            if(in_array($video['author'], $subscribed)) { 
+                                $i++;
+                                if($i <= 4) { 
+                        ?>
+                        <div class="grid-item" style="animation: scale-up-recent 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;">
+                            <img class="thumbnail" onerror="this.src='/dynamic/thumbs/default.png'" src="/dynamic/thumbs/<?php echo htmlspecialchars($video['thumbnail']); ?>">
+                            <div class="video-info-grid">
+                                <a href="/watch?v=<?php echo $video['rid']; ?>"><?php echo htmlspecialchars($video['title']); ?></a><br>
+                                <span class="video-info-small">
+                                    <span class="video-views"><?php echo $_video_fetch_utils->fetch_video_views($video['rid']); ?> views</span><br>
+                                    <a href="/user/<?php echo htmlspecialchars($video['author']); ?>"><?php echo htmlspecialchars($video['author']); ?></a>
+                                </span>
+                            </div>
+                        </div>
+                        <?php } } } if($i == 0) { echo "There are no videos from your subscriptions!<br><br>"; } ?>
+                    </div>
+                <?php } ?>
                 <h2>Recently Viewed Videos</h2><br>
                 <div class="grid-view">
                     <?php
@@ -39,7 +65,7 @@
                         if($_video_fetch_utils->video_exists($video['rid'])) { 
                     ?> 
                     <div class="grid-item" style="animation: scale-up-recent 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;">
-                        <img class="thumbnail" src="/dynamic/thumbs/<?php echo htmlspecialchars($video['thumbnail']); ?>">
+                        <img class="thumbnail" onerror="this.src='/dynamic/thumbs/default.png'" src="/dynamic/thumbs/<?php echo htmlspecialchars($video['thumbnail']); ?>">
                         <div class="video-info-grid">
                             <a href="/watch?v=<?php echo $video['rid']; ?>"><?php echo htmlspecialchars($video['title']); ?></a><br>
                             <span class="video-info-small">
@@ -198,12 +224,22 @@
                 <?php } ?>
             </div>
             <div class="www-home-right">
+                <?php if(!isset($_SESSION['siteusername'])) { ?>
                 <div class="benifits-outer-front">
                     <div class="benifits-inner-front">
                         <b>Want to upload videos?</b><br>
                         <a href="/sign_up">Sign up for a SubRocks Account</a>
                     </div>
                 </div><br>
+                <?php } else { ?>
+                <div class="channel-latest-stats">
+                    <h3>Welcome back, <?php echo htmlspecialchars($_SESSION['siteusername']); ?></h3>
+                    You have <a href="/inbox"><?php echo $_user_fetch_utils->fetch_unread_pms($_SESSION['siteusername']); ?> new messages!</a><br>
+                    You've watched <b><?php echo $_video_fetch_utils->fetch_history_ammount($_SESSION['siteusername']); ?></b> videos.<br>
+                    Your account was created <b><?php echo $_video_fetch_utils->time_elapsed_string($_user_fetch_utils->fetch_creation_date($_SESSION['siteusername'])); ?></b>. Wow!<br>
+                    Your videos have been watched <b><?php echo $_video_fetch_utils->fetch_views_from_user($_SESSION['siteusername']); ?></b> times.
+                </div>
+                <?php } ?>
                 <div class="whats-new">
                     <h3>What's New</h3>
                     <p class="whats-new-text">

@@ -5,25 +5,42 @@
     right: 0;
     height: 32px;
     padding-top: 1px;
-    background-image: url(./gradient.png);
+    background: rgb(203,203,203);
+    background: -moz-linear-gradient(0deg, rgba(203,203,203,1) 0%, rgba(246,246,246,1) 100%);
+    background: -webkit-linear-gradient(0deg, rgba(203,203,203,1) 0%, rgba(246,246,246,1) 100%);
+    background: linear-gradient(0deg, rgba(203,203,203,1) 0%, rgba(246,246,246,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#cbcbcb",endColorstr="#f6f6f6",GradientType=1); 
     table-layout: fixed;
     z-index: 2;
 }
 .playButton {
-	width: 30px;
-    height: 25px;
-	margin-left: 4px;
-    margin-top: 3px;
-	background-image: url(./play.png);
-	display: inline-block;
+    width: 14px;
+    height: 17px;
+    background-image: url(./play1.png);
+    display: inline-block;
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    margin: 2px;
+        margin-top: 2px;
+        margin-left: 2px;
+    margin-left: 7px;
+    margin-top: 5px;
 }
+
 .pauseButton {
-	width: 30px;
-    height: 25px;
-	margin-left: 4px;
-    margin-top: 3px;
-	background-image: url(./pause.png);
-	display: inline-block;
+    width: 14px;
+    height: 17px;
+    background-image: url(./pause1.png);
+    display: inline-block;
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    margin: 2px;
+        margin-top: 2px;
+        margin-left: 2px;
+    margin-left: 7px;
+    margin-top: 5px;
 }
 .replayButton {
 	width: 23px;
@@ -48,30 +65,27 @@
 .separator {
 	display: inline-block;
     vertical-align: top;
-    width: 5px;
-    height: 31px;
+    width: 2px;
+    height: 32px;
 	background-image: url(./separator.png);
 	margin: 0 5px;
 	display: inline-block;
 }
 .timer {
 	display: inline-block;
-	background: url(./timer.png);
 	background-size: 1px 18px;
     height: 18px;
     line-height: 18px;
     min-width: 60px;
     white-space: nowrap;
-    color: #fff;
     padding: 0 4px;
     font-family: Arial;
+    color: black;
     border-radius: 2px;
-    font-size: 10px;
+    font-size: 11px;
     cursor: default;
     margin-top: 6px;
-}
-.dur {
-	color: #ff4444;
+    font-weight: 500;
 }
 .volbar {
 	position: relative;
@@ -101,15 +115,16 @@
 	height:100%;
 }
 .volvisual {
-	border: 0;
+    border: 0;
     padding: 0;
     vertical-align: top;
-	width: 20px;
+    width: 18px;
     height: 20px;
-	background-image: url(./volume_loud.png);
+    background-image: url(./voume.png);
     margin-top: 5px;
     overflow: hidden;
-	display: inline-block;
+    display: inline-block;
+    background-size: cover;
 }
 .progress {
 	background: url(./progress.png);

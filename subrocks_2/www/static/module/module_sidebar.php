@@ -62,6 +62,9 @@ li a {
     <li id="sidebar-item">
       <a href="/inbox/">Inbox</a>
     </li>
+    <li id="sidebar-item">
+      <a href="/friends">Friends</a>
+    </li>
     <li id="sidebar-extra">
       
     </li>

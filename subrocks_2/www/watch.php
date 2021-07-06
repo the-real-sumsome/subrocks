@@ -116,13 +116,21 @@
             visibility: hidden;
         }
         </style>
+            <meta property="og:title" content="<?php echo addslashes(htmlspecialchars($_video['title'])); ?>">
+        <meta property="og:description" content="<?php echo addslashes(htmlspecialchars($_video['description'])); ?>">
+        <meta property="og:image" content="/dynamic/thumbs/<?php echo htmlspecialchars($_video['thumbnail']); ?>">
     </head>
     <body>
         <div class="www-core-container">
             <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/module/header.php"); ?>
             <h1 class="video-title"><?php echo htmlspecialchars($_video['title']); ?></h1>
             <div class="www-home-left">
-                <iframe style="border: 0px; overflow: hidden;" src="/2007/lolplayer?id=<?php echo $_video['rid']; ?>" height="365" width="646"></iframe> <br><br>
+                <iframe style="border: 0px; overflow: hidden;" src="/2009player/lolplayer?id=<?php echo $_video['rid']; ?>" height="365" width="646"></iframe> <br><br>
+                <?php if($_video['featured'] == "v") { ?>
+                    <div class="watch-main-info-featured">
+                        This video has been featured! See more featured videos on the <a href="/">front page!</a>
+                    </div><br>
+                <?php } ?>
                 <div class="watch-main-info">
                     <h2>Rate: </h2> 
                     <?php if($_video['star_ratio'] == 0) { // THIS SHIT FUCKING SUCKS I DON'T KNOW HOW TO MAKE IT ANY BETTER THOUGH ?>
@@ -308,7 +316,7 @@
                                         $video = $_video_fetch_utils->fetch_video_rid($video['video']);
                             ?>
                                 <div class="grid-item" style="animation: scale-up-recent 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;">
-                                    <img class="thumbnail" src="/dynamic/thumbs/<?php echo htmlspecialchars($video['thumbnail']); ?>">
+                                    <img class="thumbnail" onerror="this.src='/dynamic/thumbs/default.png'" src="/dynamic/thumbs/<?php echo htmlspecialchars($video['thumbnail']); ?>">
                                     <div class="video-info-grid">
                                         <a href="/watch?v=<?php echo $video['rid']; ?>"><?php echo htmlspecialchars($video['title']); ?></a><br>
                                         <span class="video-info-small">
@@ -435,7 +443,7 @@
                 <div class="content">
                     <div class="videos-list-watch"><br>
                         <?php
-                            $stmt = $conn->prepare("SELECT rid, title, thumbnail, duration, title, author, publish, description FROM videos WHERE author = ? AND visibility = 'v' ORDER BY id DESC LIMIT 20");
+                            $stmt = $conn->prepare("SELECT rid, title, thumbnail, duration, title, author, publish, description FROM videos WHERE author = ? ORDER BY id DESC LIMIT 20");
                             $stmt->bind_param("s", $_video['author']);
                             $stmt->execute();
                             $result = $stmt->get_result();
@@ -462,7 +470,7 @@
                 <div class="content" style="display: block;">
                     <div class="videos-list-watch"><br>
                         <?php
-                            $stmt = $conn->prepare("SELECT rid, title, thumbnail, duration, title, author FROM videos WHERE visibility = 'v' ORDER BY rand() LIMIT 20");
+                            $stmt = $conn->prepare("SELECT rid, title, thumbnail, duration, title, author FROM videos ORDER BY rand() LIMIT 20");
                             $stmt->execute();
                             $result = $stmt->get_result();
                             while($video = $result->fetch_assoc()) {

@@ -12,14 +12,14 @@
     top: -16px;
     left: 0px;
 ">
-<video id="video-stream" src="/dynamic/videos/<?php echo htmlspecialchars($_GET['id']); ?>.mp4" style="width: 100%;
-    height: 100%;"></video>
+<video id="video-stream" src="https://cdn.discordapp.com/attachments/858227583861391361/860570475888115742/Beans.mp4" style="width: 100%;
+    height: 100%;" onclick="playVid();" preload="auto"></></video>
 </div>
+<div id="loading" class="spinner"></div>
+<div class="playIcon" onclick="playVid();"></div>
 <div class="controls" style="background-color:white;">
 <div style="float: left; height: 100%; text-align: left;">
-<div class="separator" style="margin: 0px;"></div>
 <div class="playButton" id="playpause" onclick="playVid();"></div>
-<div class="separator"></div>
 </div>
 <div style="float: right;">
 <div class="timer">
@@ -75,38 +75,38 @@ var isInFullScreen = (document.fullscreenElement && document.fullscreenElement !
     if (!isInFullScreen) {
         if (docElm.requestFullscreen) {
             docElm.requestFullscreen();
-			fullscreen.style.backgroundImage = "url(./assets/close.png)";
-			fullscreen.style.width = "44px";
+			fullscreen.style.backgroundImage = "url(./assets/fullscreen.png)";
+			fullscreen.style.width = "17px";
         } else if (docElm.mozRequestFullScreen) {
             docElm.mozRequestFullScreen();
-			fullscreen.style.backgroundImage = "url(./assets/close.png)";
-			fullscreen.style.width = "44px";
+			fullscreen.style.backgroundImage = "url(./assets/fullscreen.png)";
+			fullscreen.style.width = "17px";
         } else if (docElm.webkitRequestFullScreen) {
             docElm.webkitRequestFullScreen();
-			fullscreen.style.backgroundImage = "url(./assets/close.png)";
-			fullscreen.style.width = "44px";
+			fullscreen.style.backgroundImage = "url(./assets/fullscreen.png)";
+			fullscreen.style.width = "17px";
         } else if (docElm.msRequestFullscreen) {
             docElm.msRequestFullscreen();
-			fullscreen.style.backgroundImage = "url(./assets/close.png)";
-			fullscreen.style.width = "44px";
+			fullscreen.style.backgroundImage = "url(./assets/fullscreen.png)";
+			fullscreen.style.width = "17px";
         }
     } else {
         if (document.exitFullscreen) {
             document.exitFullscreen();
 			fullscreen.style.backgroundImage = "url(./assets/fullscreen.png)";
-			fullscreen.style.width = "22px";
+			fullscreen.style.width = "17px";
         } else if (document.webkitExitFullscreen) {
             document.webkitExitFullscreen();
 			fullscreen.style.backgroundImage = "url(./assets/fullscreen.png)";
-			fullscreen.style.width = "22px";
+			fullscreen.style.width = "17px";
         } else if (document.mozCancelFullScreen) {
             document.mozCancelFullScreen();
 			fullscreen.style.backgroundImage = "url(./assets/fullscreen.png)";
-			fullscreen.style.width = "22px";
+			fullscreen.style.width = "17px";
         } else if (document.msExitFullscreen) {
             document.msExitFullscreen();
 			fullscreen.style.backgroundImage = "url(./assets/fullscreen.png)";
-			fullscreen.style.width = "22px";
+			fullscreen.style.width = "17px";
         }
 }
 }
@@ -123,17 +123,17 @@ function exitHandler()
  if (document.webkitIsFullScreen === false)
  {
   fullscreen.style.backgroundImage = "url(./assets/fullscreen.png)";
-  fullscreen.style.width = "22px";
+  fullscreen.style.width = "17px";
  }
  else if (document.mozFullScreen === false)
  {
   fullscreen.style.backgroundImage = "url(./assets/fullscreen.png)";
-  fullscreen.style.width = "22px";
+  fullscreen.style.width = "17px";
  }
  else if (document.msFullscreenElement === false)
  {
   fullscreen.style.backgroundImage = "url(./assets/fullscreen.png)";
-  fullscreen.style.width = "22px";
+  fullscreen.style.width = "17px";
  }
 }  
 function vidpercentage(num)
@@ -141,6 +141,7 @@ function vidpercentage(num)
   return num*100/vid.duration; 
 }
 function playVid() {
+$('.playIcon').remove();
 if (playpause.className == "playButton") {
     vid.play();
 	playpause.className = "pauseButton";
@@ -171,5 +172,18 @@ function timeUpdate() {
 vid.addEventListener('contextmenu', e => {
   e.preventDefault();
 });
+vid.onwaiting = function() {
+  showLoad(loading, this);
+};
+vid.onplaying = function() {
+  hideLoad(loading, this);
+};
+function showLoad(img, vid) {
+  img.style.display = "block";
+}
+
+function hideLoad(img, vid) {
+  img.style.display = "none";
+}
 </script>
 </body>

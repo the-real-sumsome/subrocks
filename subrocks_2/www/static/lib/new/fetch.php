@@ -32,6 +32,78 @@ class user_fetch_utils {
         $stmt->close();
     }
 
+    function fetch_friends_accepted($username) {
+        $stmt = $this->conn->prepare("SELECT * FROM friends WHERE reciever = ? AND status = 'a'");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $rows = mysqli_num_rows($result); 
+        $stmt->close();
+    
+        $friends = $rows;
+
+        $stmt = $this->conn->prepare("SELECT * FROM friends WHERE sender = ? AND status = 'a'");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $rows = mysqli_num_rows($result); 
+        $stmt->close();
+    
+        return $friends + $rows;
+    }
+
+    function fetch_friend_id($id) {
+            $stmt = $this->conn->prepare("SELECT * FROM friends WHERE id = ?");
+            $stmt->bind_param("s", $id);
+            $stmt->execute();
+        $result = $stmt->get_result();
+        $friend = $result->fetch_assoc();
+
+        if($result->num_rows === 0) 
+            return 0;
+        else
+            return $friend;
+
+        $stmt->close();
+    }
+
+    function fetch_unread_pms($id) {
+        $stmt = $this->conn->prepare("SELECT * FROM pms WHERE touser = ? AND readed = 'n'");
+        $stmt->bind_param("s", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $rows = mysqli_num_rows($result); 
+        $stmt->close();
+    
+        return $rows;
+    }
+
+    function fetch_friends_number($reciever, $sender) {
+        $stmt = $this->conn->prepare("SELECT * FROM friends WHERE sender = ? AND reciever = ?");
+        $stmt->bind_param("ss", $sender, $reciever);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $rows = mysqli_num_rows($result); 
+        $stmt->close();
+    
+        return $rows;
+    }
+
+    function fetch_creation_date($username) {
+            $stmt = $this->conn->prepare("SELECT created FROM users WHERE username = ?");
+            $stmt->bind_param("s", $username);
+            $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        if($result->num_rows === 0) 
+            return 0;
+        else
+            return $user['created'];
+
+        $stmt->close();
+    }
+
     function fetch_user_videos($id) {
         $stmt = $this->conn->prepare("SELECT rid FROM videos WHERE author = ?");
         $stmt->bind_param("s", $id);

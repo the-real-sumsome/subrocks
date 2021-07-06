@@ -186,23 +186,23 @@
             </center><br>
           
 
-                <?php if($_user['favorites'] != 0) { ?>
+                <?php if($_user['subscribers'] != 0) { ?>
                 <div class="channel-box-profle">
                     <div class="channel-box-top" style="height: 12px;">
-                        <h3 style="display: inline-block;">Favorites (<?php echo $_user['favorites']; ?>)</h3>
+                        <h3 style="display: inline-block;">Subscriptions (<?php echo $_user['subscribers']; ?>)</h3>
                     </div>
                     <div class="channel-box-no-bg">
                     <?php
-                            $stmt56 = $conn->prepare("SELECT * FROM favorite_video WHERE sender = ? ORDER BY id DESC");
+                            $stmt56 = $conn->prepare("SELECT * FROM subscribers WHERE reciever = ? ORDER BY id DESC");
                             $stmt56->bind_param("s", $_GET['n']);
                             $stmt56->execute();
                             $result854 = $stmt56->get_result();
                             $result56 = $result854->num_rows;
                             ?>
                             <?php
-                            $results_per_page = 20;
+                            $results_per_page = 36;
 
-                            $stmt = $conn->prepare("SELECT * FROM favorite_video WHERE sender = ? ORDER BY id DESC");
+                            $stmt = $conn->prepare("SELECT * FROM subscribers WHERE reciever = ? ORDER BY id DESC");
                             $stmt->bind_param("s", $_GET['n']);
                             $stmt->execute();
                             $result = $stmt->get_result();
@@ -221,29 +221,21 @@
 
                             $stmt->close();
 
-                            $stmt = $conn->prepare("SELECT * FROM favorite_video WHERE sender = ? ORDER BY id DESC LIMIT ?, ?");
+                            $stmt = $conn->prepare("SELECT * FROM subscribers WHERE reciever = ? ORDER BY id DESC LIMIT ?, ?");
                             $stmt->bind_param("sss", $_GET['n'], $page_first_result, $results_per_page);
                             $stmt->execute();
                             $result = $stmt->get_result();
 
-                            while($video = $result->fetch_assoc()) {
-                                $video = $_video_fetch_utils->fetch_video_rid($video['reciever']);
-                                if($_video_fetch_utils->video_exists($video['rid'])) {
-                                ?>
-                                <div class="grid-item" style="">
-                                    <img class="thumbnail" src="/dynamic/thumbs/<?php echo htmlspecialchars($video['thumbnail']); ?>">
-                                    <div class="video-info-grid">
-                                        <a href="/watch?v=<?php echo $video['rid']; ?>"><?php echo $_video_fetch_utils->parse_title($video['title']);  ?></a><br>
-                                        <span class="video-info-small">
-                                            <span class="video-views"><?php echo $_video_fetch_utils->fetch_video_views($video['rid']); ?> views</span><br>
-                                            <a href="/user/<?php echo htmlspecialchars($video['author']); ?>"><?php echo htmlspecialchars($video['author']); ?></a>
-                                        </span>
-                                    </div>
+                            while($subscriber = $result->fetch_assoc()) {
+                                if($_user_fetch_utils->user_exists($subscriber['reciever'])) { ?>
+                                <div class="grid-item" style="width: 90px;">
+                                    <img class="channel-pfp" style="width: 58px; height: 58px;" src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($subscriber['sender']); ?>"><br>
+                                    <a style="font-size: 10px;text-decoration: none;" href="/user/<?php echo htmlspecialchars($subscriber['sender']); ?>"><?php echo htmlspecialchars($subscriber['sender']); ?></a>
                                 </div>
-                        <?php } } ?>
+                            <?php } } ?>
                         <center>
                         <?php for($page = 1; $page<= $number_of_page; $page++) {  ?>
-                            <a href="channel_favorites?n=<?php echo htmlspecialchars($_GET['n'])?>&page=<?php echo $page ?>"><?php echo $page; ?></a>&nbsp;
+                            <a href="channel_subscriptions?n=<?php echo htmlspecialchars($_GET['n'])?>&page=<?php echo $page ?>"><?php echo $page; ?></a>&nbsp;
                         <?php } ?>
                         </center>  
                     </div>
