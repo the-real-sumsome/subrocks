@@ -57,13 +57,16 @@ li a {
       <a href="/playlists">Playlists</a>
     </li>
     <li id="sidebar-item">
-      <a href="/subscriptions">My Subscriptions</a>
+      <a href="/channel_subscriptions?n=<?php echo htmlspecialchars($_SESSION['siteusername']); ?>">My Subscriptions</a>
     </li>
     <li id="sidebar-item">
       <a href="/inbox/">Inbox</a>
     </li>
     <li id="sidebar-item">
       <a href="/friends">Friends</a>
+    </li>
+    <li id="sidebar-item">
+      <a href="/quicklist">Quicklist</a>
     </li>
     <li id="sidebar-extra">
       

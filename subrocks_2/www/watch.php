@@ -377,6 +377,11 @@
                     <?php } ?><br>
                     <?php while($comment = $result->fetch_assoc()) {  
                         $comment['likes'] = $_video_fetch_utils->fetch_comment_likes($comment['id']) - $_video_fetch_utils->fetch_comment_dislikes($comment['id']);
+                        
+                        if($comment['likes'] >= 1) 
+                            $comment['likes'] = "<span style='vertical-align:middle;color:green;font-weight:bold;'>" . $comment['likes'] . "</span>";
+                        if($comment['likes'] <= -1) 
+                            $comment['likes'] = "<span style='vertical-align:middle;color:red;font-weight:bold;'>" . $comment['likes'] . "</span>";
                         ?>
                         <hr class="thin-line">
                         <div class="comment-watch">
@@ -451,7 +456,9 @@
                         ?>
                             <div class="video-item-watch">
                                 <div class="thumbnail" style="
-                                    background-image: url(/dynamic/thumbs/<?php echo $video['thumbnail']; ?>), url('/dynamic/thumbs/default.png');"><span class="timestamp"><?php echo $_video_fetch_utils->timestamp($video['duration']); ?></span></div>
+                                    background-image: url(/dynamic/thumbs/<?php echo $video['thumbnail']; ?>), url('/dynamic/thumbs/default.png');">
+                                    <a class="quicklist-add" style="top: 30px;" href="/get/add_to_quicklist?v=<?php echo $video['rid']; ?>"></a>
+                                    <span class="timestamp"><?php echo $_video_fetch_utils->timestamp($video['duration']); ?></span></div>
                                 
                                 <div class="video-info-watch">
                                     <a href="/watch?v=<?php echo $video['rid']; ?>"><b><?php echo htmlspecialchars($video['title']); ?></b></a><br>
@@ -477,7 +484,9 @@
                         ?>
                             <div class="video-item-watch">
                                 <div class="thumbnail" style="
-                                    background-image: url(/dynamic/thumbs/<?php echo $video['thumbnail']; ?>), url('/dynamic/thumbs/default.png');"><span class="timestamp"><?php echo $_video_fetch_utils->timestamp($video['duration']); ?></span></div>
+                                    background-image: url(/dynamic/thumbs/<?php echo $video['thumbnail']; ?>), url('/dynamic/thumbs/default.png');">
+                                    <a class="quicklist-add" style="top: 30px;" href="/get/add_to_quicklist?v=<?php echo $video['rid']; ?>"></a>
+                                    <span class="timestamp"><?php echo $_video_fetch_utils->timestamp($video['duration']); ?></span></div>
                                 
                                 <div class="video-info-watch">
                                     <a href="/watch?v=<?php echo $video['rid']; ?>"><b><?php echo htmlspecialchars($video['title']); ?></b></a><br>

@@ -26,42 +26,27 @@
             Having problems with the new upload design or not feeling ready for it just yet? Watch our <a href="#">video tutorial</a> or ask questions on our Discord server.<br><br>
     
     <div id="upload_page_intro">
-                <div style="color: #555;
-width: 198px;
-padding-top: 30px;
-float: right;
-padding-right: 77px;">
-                    <b>Coming soon</b>
-                    <ul class="upload-tips">
-                        <li>
-                            How to upload a video tutorial
-                        </li>
-                        <li>
-                            Q&A for Uploading
-                        </li>
-                        <li>
-                            Segmented uploading
-                        </li>
-                    </ul>
-                    <b>Tip</b>
-                    <ul class="upload-tips">
-                        <li>
-                            You can upload multiple files at once by opening multiple tabs.
-                        </li>
-                        <li>
-                            You can compress videos under 100MB using a tool named <a href="https://handbrake.fr">Handbrake.</a>
-                        </li>
-                    </ul>
+                <div class="upload-guidelines">
+                    Important: Do not upload any TV shows, music videos, music concerts, or commercials without permission unless they consist entirely of content you created yourself.<br><br>
+
+                    The Copyright Tips page and the Community Guidelines can help you determine whether your video infringes someone else's copyright.<br><br>
+
+                    By clicking "Upload Video", you are representing that this video does not violate SubRocks's Terms of Use and that you own all copyrights in this video or have authorization to upload it.
                 </div>
                 <div style="width: 680px;">
-                <div class="title-bar-upload-s">
-                    <b>Upload Video </b>
-                    </div>
-                    <div class="upload-video-stage-1">
-                        <img id="upload_button" src="/static/img/UploadArrowHover.png" style="cursor: pointer;"
-                        onclick="this.display = 'none'; document.getElementById"
-                        ><br><br>
-                        <span style="color: #555;font-size: 14px;font-weight: bold;">Click on the upload icon to start uploading your videos.</span><br><br>
+                    <div class="upload-new-base">
+                        <div class="upload-inner-box">
+                        <button class="upload_button" id="upload_button" style="float: none;">Upload</button><br><br>
+                        </div>
+                        <div style="position: relative; left: 394px;">
+                            <h4 style="position: relative;right: 391px;">Videos can be...</h4>
+                            <ul style="list-style: disc inside none;width: 159px;padding: 0px;position: relative;bottom: 114px;">
+                                <li>High Definition</li>
+                                <li>Up to 2 GB in size.</li>
+                                <li>Up to 10 minutes in length.</li>
+                                <li>A wide variety of formats</li>
+                            </ul>
+                        </div>
                     </div>
                     <div style="text-align: center;">
                         <span style="color: #555;">Upload HD videos in various formats up to 100MB.</span><br><br>
@@ -69,39 +54,31 @@ padding-right: 77px;">
                     </div>
                 </div>
             </div>
-            <div class="guideline-videos" id="guidelines_video">
-                    <b>Guidelines</b>
-                    <ul style="list-style: inside; line-height: 15.5px;">
-                        <li>
-                            Don't reupload videos that aren't yours.
-                        </li>
-                        <li>
-                            All videos are converted to 720p@1000kbps H264/AAC by FFMPEG, allowing a wide variety of formats.
-                        </li>
-                        <li>
-                            Videos must be smaller than 100MB. (because of Cloudflare)
-                        </li>
-                        <li>
-                            No copyrighted content that will get us DMCA'd.
-                        </li>
-                        <li>
-                            Videos are manually approved.
-                        </li>
-                    </ul>
-                </div>
                 <div style="display: none;" id="main_upload">
+                    <div class="upload-guidelines" style="position: relative;left: 14px;">
+                        Important: Do not upload any TV shows, music videos, music concerts, or commercials without permission unless they consist entirely of content you created yourself.<br><br>
+
+                        The Copyright Tips page and the Community Guidelines can help you determine whether your video infringes someone else's copyright.<br><br>
+
+                        By clicking "Upload Video", you are representing that this video does not violate SubRocks's Terms of Use and that you own all copyrights in this video or have authorization to upload it.
+                    </div>
+                    <div class="upload-new-base" style="height: 400px;width: 632px;">
                     <?php if(!isset($_SESSION['siteusername'])) { echo("You arent logged in by the way! If you arent logged in, this won't work!"); } ?>
                     <form method="post" enctype="multipart/form-data" id="submitform">
                         <?php if(isset($fileerror)) { echo $fileerror . "<br>"; } ?>
-                        <div class="title-bar-upload">
-                            <b><?php if(!isset($cLang)) { ?> Upload Video <?php } else { echo $cLang['actualUploadVideo']; } ?> </b>
-                        </div>
                         <div class="upload-main-s">
                             <b><?php if(!isset($cLang)) { ?> Title <?php } else { echo $cLang['uTitle']; } ?> </b> <br><input class="upload-inputs" type="text" name="title" id="upltx" required="required" row="20"><br><br>
                             <b><?php if(!isset($cLang)) { ?> Description <?php } else { echo $cLang['description']; } ?> </b><br>
                             <textarea onkeyup="textCounter(this,'counter',500);"  style="resize: none;width: 345px;padding:5px;border-radius:5px;background-color:white;border: 1px solid #d3d3d3;" id="upltx2" name="comment"></textarea><br><br>
                             <input disabled style="" maxlength="3" size="3" value="500" id="counter" class="characters-remaining"> <?php if(!isset($cLang)) { ?> characters remaining <?php } else { echo $cLang['charremaining']; } ?> 
                             <br><br>
+                            <b>Category</b><br>
+                            <select id="category" name="category" style="padding: 3px;border-radius:5px; border: 1px solid #d3d3d3;">  
+                                <?php $categories = ["None", "Film & Animation", "Autos & Vehicles", "Music", "Pets & Animals", "Sports", "Travel & Events", "Gaming", "People & Blogs", "Comedy", "Entertainment", "News & Politics", "Howto & Style", "Education", "Science & Technology", "Nonprofits & Activism"]; ?>
+                                <?php foreach($categories as $categoryTag) { ?>
+                                    <option value="<?php echo $categoryTag; ?>"><?php echo $categoryTag; ?></option>
+                                <?php } ?>
+                            </select><br><br>
                             <script>
                                 function textCounter(field,field2,maxlimit) {
                                     var countfield = document.getElementById(field2);
@@ -114,7 +91,7 @@ padding-right: 77px;">
                                 }
                             </script>
                             <b>Tags</b> <br>
-                            <input id="tags" class="upload-inputs" placeholder="Seperate tags with commas" type="text" name="tags" required="required" row="20"><br><br>
+                            <input id="tags" class="upload-inputs" placeholder="Seperate tags with commas" type="text" name="tags" row="20"><br><br>
                         
                             <b><?php if(!isset($cLang)) { ?> Recommended Tags <?php } else { echo $cLang['rectag']; } ?> </b><br><br>
                             <div style="width: 345px;">
@@ -165,15 +142,6 @@ padding-right: 77px;">
                                     <option value="prv">Private</option>
                                 </select>
                             </div>
-                            <div style="position:relative;left: 390px; top: -302px;">
-                                <b>Category</b><br>
-                                <select id="category" name="category" style="padding: 3px;border-radius:5px; border: 1px solid #d3d3d3;">  
-                                    <?php $categories = ["None", "Film & Animation", "Autos & Vehicles", "Music", "Pets & Animals", "Sports", "Travel & Events", "Gaming", "People & Blogs", "Comedy", "Entertainment", "News & Politics", "Howto & Style", "Education", "Science & Technology", "Nonprofits & Activism"]; ?>
-                                    <?php foreach($categories as $categoryTag) { ?>
-                                        <option value="<?php echo $categoryTag; ?>"><?php echo $categoryTag; ?></option>
-                                    <?php } ?>
-                                </select>
-                            </div>
                             <!--
                             <div id="retard" style="width: 450px; padding: 5px; border: 1px solid #c6c6c6; background-color: #ffffd4; position: relative; bottom: 84px;">
                             <small>
@@ -194,6 +162,7 @@ padding-right: 77px;">
                         
                         <!-- class="g-recaptcha" data-sitekey="<?php // echo $config['recaptcha_sitekey']; ?>" data-callback="onLogin" -->
                     </form>
+                </div>
                     <div class="progressbar" style="display: hidden;">
                         Your video is being uploaded. Please wait. [DO NOT LEAVE THIS PAGE EVEN IF IT IS AT 100%]<span class="timeRemaining"></span><br>
                         <div class="barbg">

@@ -222,7 +222,7 @@
                         <h3 style="display: inline-block;">Contact with <?php echo htmlspecialchars($_user['username']); ?></h3>
                     </div>
                     <div class="channel-box-no-bg">
-                        <div style="display: inline-block;width:116px;height:95px;"></div>
+                        <div style="display: inline-block;width:116px;height:95px;"><img src="/dynamic/pfp/<?php echo $_user['pfp']; ?>" width="100%" height="100%"></div>
                         <span style="display: inline-block;vertical-align: top;line-height: 30px;line-height: 21px;font-size: 11px;">
                             <img src="/static/img/message.png" style="vertical-align: middle;"> <a href="/inbox/send?to=<?php echo htmlspecialchars($_user['username']); ?>">Send Message</a><br>
                             <img src="/static/img/comment.png" style="vertical-align: middle;"> <a href="#">Add Contact</a><br>

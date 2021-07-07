@@ -3,17 +3,21 @@
     <span class="www-motto">
     Smashing Rocks &trade;
     </span>
-    <div class="www-user-info">
+    <div class="www-user-info" <?php if(isset($_SESSION["siteusername"])) { ?>style="margin-top: 14px!important;"<?php } ?>>
         <?php if(!isset($_SESSION['siteusername'])) { ?>
             <strong><a style="border-left: 0px;" class="first" href="/sign_up">Sign Up</a></strong> 
-            <a href="/quicklist">QuickList</a> (?) 
+            <a href="/quicklist">QuickList</a> (0) 
             <a href="/help">Help</a> 
             <a class="" href="/sign_in">Sign In</a>
         <?php } else { ?>
-            
+            <?php if($_user_fetch_utils->fetch_unread_pms($_SESSION['siteusername']) == 0) { ?>
+                <a href="/inbox" style="margin-right: 5px;border-left: 0;"><b style="color:grey;line-height: 0;font-size: 12px;font-weight: 100;">(<?php echo $_user_fetch_utils->fetch_unread_pms($_SESSION['siteusername']); ?>)</b> <img style="width: 16px;vertical-align: middle;margin-bottom: 3px;" src="/static/img/mail.png"></a>
+            <?php } else { ?>
+                <a href="/inbox" style="margin-right: 5px;border-left: 0;"><b style="color:grey;line-height: 0;font-size: 12px;font-weight: 100;">(<?php echo $_user_fetch_utils->fetch_unread_pms($_SESSION['siteusername']); ?>)</b> <img style="width: 16px;vertical-align: middle;margin-bottom: 3px;" src="/static/img/mail_notif.png"></a>
+            <?php } ?>
             <div class="dropdown">
-                <button onclick="dropdown()" class="dropbtn"><?php echo htmlspecialchars($_SESSION['siteusername']); ?> <img style="margin-left: 5px;width: 8px;" src="/static/img/dropdown.png"></button>
-                <div id="dropdown-header" class="dropdown-content">
+                <button onclick="dropdown()" style="color: blue;font-size: 14px;font-weight: bold;" class="dropbtn"><?php echo htmlspecialchars($_SESSION['siteusername']); ?><div style="width: 0px;height: 0;border-left: 5px solid transparent;border-right: 5px solid transparent;border-top: 6px solid #4908d4;margin-left: 3px;display: inherit;"></div></button>
+                <div id="dropdown-header" style="margin-left:6px;" class="dropdown-content">
                     <a href="/user/<?php echo htmlspecialchars($_SESSION['siteusername']); ?>">My Channel</a>
                     <a href="/channel_subscriptions?n=<?php echo htmlspecialchars($_SESSION['siteusername']); ?>">Subscriptions</a>
                     <a href="/inbox/">Inbox</a>
@@ -22,12 +26,9 @@
                     <a href="/friends">Friends</a>
                 </div>
             </div>
-            <?php if($_user_fetch_utils->fetch_unread_pms($_SESSION['siteusername']) == 0) { ?>
-                <a href="/inbox"><img style="width: 16px;vertical-align: middle;" src="/static/img/mail.png"></a>
-            <?php } else { ?>
-                <a href="/inbox"><img style="width: 16px;vertical-align: middle;" src="/static/img/mail_notif.png"> (<?php echo $_user_fetch_utils->fetch_unread_pms($_SESSION['siteusername']); ?>)</a>
-            <?php } ?>
-            <a href="/logout">Logout</a> 
+			<a href="/quicklist">QuickList (<?php echo $_user_fetch_utils->fetch_quicklist_videos($_SESSION['siteusername']); ?>)</a>
+            <a href="/help">Help</a> 
+            <a href="/logout">Sign Out</a> 
         <?php } ?>
     </div>
     <br>
@@ -43,7 +44,7 @@
         </form>
 
         <a href="/upload_video">
-            <button class="upload_button">
+            <button style="cursor:pointer;" class="upload_button">
                 Upload
             </button>
         </a>

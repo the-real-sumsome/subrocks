@@ -255,9 +255,6 @@
         <div id="channelbg">
             &nbsp;
         </div>
-        <div class="www-core-container">
-        <?php require($_SERVER['DOCUMENT_ROOT'] . "/static/module/footer.php"); ?>
-        </div>
 
     </body>
 </html>

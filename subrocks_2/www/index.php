@@ -129,7 +129,10 @@
                 ?> 
                 <div class="video-item">
                     <div class="thumbnail" style="
-                        background-image: url(/dynamic/thumbs/<?php echo $video['thumbnail']; ?>), url('/dynamic/thumbs/default.png');"><span class="timestamp"><?php echo $_video_fetch_utils->timestamp($video['duration']); ?></span></div>
+                        background-image: url(/dynamic/thumbs/<?php echo $video['thumbnail']; ?>), url('/dynamic/thumbs/default.png');">
+                        <a class="quicklist-add" href="/get/add_to_quicklist?v=<?php echo $video['rid']; ?>"></a>
+                        
+                        <span class="timestamp"><?php echo $_video_fetch_utils->timestamp($video['duration']); ?></span></div>
                     
                     <div class="video-info">
                         <a href="/watch?v=<?php echo $video['rid']; ?>"><b><?php echo htmlspecialchars($video['title']); ?></b></a><br>

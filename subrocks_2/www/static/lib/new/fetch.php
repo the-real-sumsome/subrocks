@@ -78,6 +78,17 @@ class user_fetch_utils {
         return $rows;
     }
 
+    function fetch_quicklist_videos($id) {
+        $stmt = $this->conn->prepare("SELECT video FROM quicklist_videos WHERE author = ?");
+        $stmt->bind_param("s", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $rows = mysqli_num_rows($result); 
+        $stmt->close();
+    
+        return $rows;
+    }
+
     function fetch_friends_number($reciever, $sender) {
         $stmt = $this->conn->prepare("SELECT * FROM friends WHERE sender = ? AND reciever = ?");
         $stmt->bind_param("ss", $sender, $reciever);

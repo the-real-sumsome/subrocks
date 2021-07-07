@@ -79,6 +79,18 @@ a {
     border-right: 1px solid #999;
 }
 
+.www-header-item:hover {
+	background: -moz-linear-gradient(0deg, rgb(171 169 169) -82%, rgb(255 255 255) 81%);
+	background: -webkit-linear-gradient(0deg, rgb(171 169 169) -82%, rgb(255 255 255) 81%);
+	background: linear-gradient(0deg, rgb(171 169 169) -82%, rgb(255 255 255) 81%);
+}
+
+.www-header-item:focus {
+	background: -moz-linear-gradient(0deg, rgb(247 246 246) 58%, rgb(158 157 157) 100%);
+	background: -webkit-linear-gradient(0deg, rgb(247 246 246) 58%, rgb(158 157 157) 100%);
+	background: linear-gradient(0deg, rgb(247 246 246) 58%, rgb(158 157 157) 100%);
+}
+
 .www-header-list {
     height: 35px;
     background-position: 0 -487px;
@@ -113,7 +125,7 @@ a {
 .upload_button {
     font-weight: bold;
     color: #994800;
-    background: #fed81c url(/static/img/spritesheet_main.png) repeat-x center -2202px;
+    background: #fed81c url(/static/img/spritesheet_main.png) repeat-x center -2206px;
     border: 1px solid #ecc101;
     width: 75px;
     padding: 0 .8333em;
@@ -125,6 +137,10 @@ a {
     margin: 7px;
     padding: 3px 0.833em;
     margin: 6px 7px 7px 7px;
+}
+
+.upload_button:hover {
+    background: #fed81c url(/static/img/spritesheet_main.png) repeat-x center -2202px;
 }
 
 .upload_button:hover {
@@ -166,6 +182,7 @@ a {
     margin: 7px;
     padding: 3px 0.833em;
     margin: 6px 7px 7px 7px;
+	cursor:pointer;
 }
 
 #search-button {
@@ -327,16 +344,16 @@ h1, h2, h3, h4, h5, h6 {
     padding-left: 10px;
     background: rgb(87,86,87);
     background: linear-gradient(0deg, rgb(0, 0, 0) 0%, rgb(64, 62, 64) 97%, rgb(57, 55, 57) 100%);
-    width: 655px;
+    width: 630px;
     color: white;
     padding-left: 17px;
 }
 
 .upload-main-s {
-    width: 650px; 
+    width: 597px;
     padding: 15px; 
     border: 1px solid #c6c6c6; 
-    height: 327px;
+    height: 370px;
     background-color: white;
 }
 
@@ -838,7 +855,7 @@ iframe {
 .manage-base {
     width: 80%;
     float: right;
-    margin-top: -1167px;
+    margin-top: -1209px;
 }
 
 .video-manager-span {
@@ -1092,4 +1109,65 @@ iframe {
     border: 1px solid #ccc;
     padding: 5px;
     margin-bottom: 10px;
+}
+
+.quicklist-add {
+    background: transparent url(/static/img/spritesheet_main.png) repeat-x scroll 0 0;
+    width: 25px;
+    height: 25px;
+    background-position: 0 -355px;
+    border: 0px solid black;
+    display: inline-block;
+    position: relative;
+    top: 50px;
+    left: 2px;
+}
+
+.upload-new-base {
+    background-color: #eff4fc;
+    border: 1px solid #c6d1eb;
+    padding: 10px;
+    margin-bottom: 10px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    height: 152px;
+}
+
+.upload-inner-box {
+    width: 388px;
+    float: left;
+    text-align: center;
+    padding: 40px 0;
+    font-size: 13px;
+    position: relative;
+    background-color: white;
+    border: 1px solid #999;
+}
+
+.upload-guidelines {
+    background-color: #f2f2f2;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    padding: 5px 15px;
+    float: right;
+    width: 247px;
+}
+
+.barbg {
+    margin: 5px;
+    padding: 0;
+    width: 400px;
+    height: 20px;
+    background-color: darkgray;
+}
+
+.bar {
+    margin: 0;
+    padding: 0;
+    background-color: #c12c2c;
+    color: white;
+    height: 20px;
+    text-align: right;
 }
