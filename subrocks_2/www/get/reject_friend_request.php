@@ -17,16 +17,7 @@
 <?php
 $friend = $_user_fetch_utils->fetch_friend_id($_GET['id']);
 
-$name = $friend['reciever'];
-$sender = $friend['sender'];
-
-if($name != $_SESSION['siteusername']) {
-    $doesnotown = true;
-} else if($sender != $_SESSION['siteusername']) {
-    $doesnotown2 = true;
-}
-
-if($doesnotown2 == true) {
+if($friend['sender'] != $_SESSION['siteusername']) {
     die("You do not own this friendship."); 
 }
 

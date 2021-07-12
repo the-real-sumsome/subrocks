@@ -22,10 +22,6 @@ if(!isset($_SESSION['siteusername']) || !isset($_GET['v'])) {
     die("You are not logged in or you did not put in an argument");
 }
 
-if(!is_int((int)$_GET['rating'])) {
-    //header('Location: ' . $_SERVER['HTTP_REFERER']);
-}
-
 if((1 <= (int)$_GET['rating']) && ((int)$_GET['rating']) <= 5) {
     $stmt = $conn->prepare("SELECT * FROM stars WHERE sender = ? AND reciever = ?");
     $stmt->bind_param("ss", $_SESSION['siteusername'], $name);

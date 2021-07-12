@@ -17,9 +17,7 @@
 <?php
 $friend = $_user_fetch_utils->fetch_friend_id($_GET['id']);
 
-$name = $friend['reciever'];
-
-if($name != $_SESSION['siteusername'] || !isset($_GET['id'])) {
+if($friend['reciever'] != $_SESSION['siteusername'] || !isset($_GET['id'])) {
     die("You are not logged in or you did not put in an argument");
 }
 
