@@ -9,7 +9,7 @@
  */ 
 class user_fetch_utils {
     public $conn;
-    function initialize_db_var($conn) {
+    function __construct($conn) {
         $this->conn = $conn;    
     }
 
@@ -353,7 +353,7 @@ class user_fetch_utils {
  */ 
 class video_fetch_utils {
     public $conn;
-    function initialize_db_var($conn) {
+    function __construct($conn) {
         $this->conn = $conn;    
     }
 

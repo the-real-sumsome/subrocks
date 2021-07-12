@@ -9,7 +9,7 @@
  */ 
 class user_insert_utils {
     public $conn;
-    function initialize_db_var($conn) {
+    function __construct($conn) {
         $this->conn = $conn;    
     }
 
@@ -77,7 +77,7 @@ class user_insert_utils {
  */ 
 class video_insert_utils {
     public $conn;
-    function initialize_db_var($conn) {
+    function __construct($conn) {
         $this->conn = $conn;    
     }
 

@@ -5,15 +5,10 @@
 <?php
     require __DIR__ . '/vendor/autoload.php';
 
-    $_user_fetch_utils = new user_fetch_utils();
-    $_user_insert_utils = new user_insert_utils();
-    $_video_fetch_utils = new video_fetch_utils();
-    $_base_utils = new config_setup();
-    
-    $_base_utils->initialize_db_var($conn);
-    $_video_fetch_utils->initialize_db_var($conn);
-    $_user_insert_utils->initialize_db_var($conn);
-    $_user_fetch_utils->initialize_db_var($conn);
+    $_user_fetch_utils = new user_fetch_utils($conn);
+    $_user_insert_utils = new user_insert_utils($conn);
+    $_video_fetch_utils = new video_fetch_utils($conn);
+    $_base_utils = new config_setup($conn);
 
     $_base_utils->initialize_page_compass("Sign Up");
 ?>

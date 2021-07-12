@@ -12,7 +12,7 @@ class config_setup {
     public $server;
     public $current_page;
 
-    function initialize_db_var($conn) {
+    function __construct($conn) {
         $this->conn = $conn;    
     }
 

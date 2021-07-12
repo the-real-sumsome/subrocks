@@ -6,19 +6,12 @@
 <?php
     ob_start();
 
-    $_user_fetch_utils = new user_fetch_utils();
-    $_video_fetch_utils = new video_fetch_utils();
-    $_video_insert_utils = new video_insert_utils();
-    $_user_insert_utils = new user_insert_utils();
-    $_user_update_utils = new user_update_utils();
-    $_base_utils = new config_setup();
-    
-    $_base_utils->initialize_db_var($conn);
-    $_video_fetch_utils->initialize_db_var($conn);
-    $_video_insert_utils->initialize_db_var($conn);
-    $_user_fetch_utils->initialize_db_var($conn);
-    $_user_insert_utils->initialize_db_var($conn);
-    $_user_update_utils->initialize_db_var($conn);
+    $_user_fetch_utils = new user_fetch_utils($conn);
+    $_video_fetch_utils = new video_fetch_utils($conn);
+    $_video_insert_utils = new video_insert_utils($conn);
+    $_user_insert_utils = new user_insert_utils($conn);
+    $_user_update_utils = new user_update_utils($conn);
+    $_base_utils = new config_setup($conn);
 ?>
 <?php
     if($_SERVER['REQUEST_METHOD'] == 'POST' && @$_POST['bioset']) {

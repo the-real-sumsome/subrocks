@@ -9,7 +9,7 @@
  */ 
 class user_delete_utils {
     public $conn;
-    function initialize_db_var($conn) {
+    function __construct($conn) {
         $this->conn = $conn;    
     }
 
@@ -35,7 +35,7 @@ class user_delete_utils {
  */ 
 class video_delete_utils {
     public $conn;
-    function initialize_db_var($conn) {
+    function __construct($conn) {
         $this->conn = $conn;    
     }
 
