@@ -444,7 +444,7 @@
                         Embed <input style="margin-right: 13px;" value="">
                     </div>
                 </div>
-                <button type="button" class="collapsible"><img class="www-right-arrow" id="arrow_more">More From: <?php echo htmlspecialchars($_video['author']); ?></button>
+                <button type="button" class="collapsible active-dropdown"><img class="www-right-arrow" id="arrow_more">More From: <?php echo htmlspecialchars($_video['author']); ?></button>
                 <div class="content">
                     <div class="videos-list-watch"><br>
                         <?php
