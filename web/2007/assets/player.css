@@ -1,0 +1,155 @@
+.controls {
+	position: absolute;
+	bottom: 0;
+    left: 0;
+    right: 0;
+    height: 32px;
+    padding-top: 1px;
+    background: rgb(203,203,203);
+    background: -moz-linear-gradient(0deg, rgba(203,203,203,1) 0%, rgba(246,246,246,1) 100%);
+    background: -webkit-linear-gradient(0deg, rgba(203,203,203,1) 0%, rgba(246,246,246,1) 100%);
+    background: linear-gradient(0deg, rgba(203,203,203,1) 0%, rgba(246,246,246,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#cbcbcb",endColorstr="#f6f6f6",GradientType=1); 
+    table-layout: fixed;
+    z-index: 2;
+}
+.playButton {
+    width: 14px;
+    height: 17px;
+    background-image: url(./play1.png);
+    display: inline-block;
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    margin: 2px;
+        margin-top: 2px;
+        margin-left: 2px;
+    margin-left: 7px;
+    margin-top: 5px;
+}
+
+.pauseButton {
+    width: 14px;
+    height: 17px;
+    background-image: url(./pause1.png);
+    display: inline-block;
+    padding: 2px;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    margin: 2px;
+        margin-top: 2px;
+        margin-left: 2px;
+    margin-left: 7px;
+    margin-top: 5px;
+}
+.replayButton {
+	width: 23px;
+    height: 25px;
+	background-image: url(./replay.png);
+	margin-right: 3px;
+    margin-top: 3px;
+	display: inline-block;
+}
+.fullscreenButton {
+	border: 0;
+    padding: 0;
+    vertical-align: top;
+	width: 22px;
+    height: 15px;
+	background-image: url(./fullscreen.png);
+	margin-right: 9px;
+    margin-top: 8px;
+    overflow: hidden;
+	display: inline-block;
+}
+.separator {
+	display: inline-block;
+    vertical-align: top;
+    width: 2px;
+    height: 32px;
+	background-image: url(./separator.png);
+	margin: 0 5px;
+	display: inline-block;
+}
+.timer {
+	display: inline-block;
+	background-size: 1px 18px;
+    height: 18px;
+    line-height: 18px;
+    min-width: 60px;
+    white-space: nowrap;
+    padding: 0 4px;
+    font-family: Arial;
+    color: black;
+    border-radius: 2px;
+    font-size: 11px;
+    cursor: default;
+    margin-top: 6px;
+    font-weight: 500;
+}
+.volbar {
+	position: relative;
+    display: inline-block;
+    vertical-align: top;
+    width: 47px;
+    height: 4px;
+    background: url(./bar.png);
+	background-size: 47px 4px;
+    background-clip: content-box;
+    padding: 6px 0;
+    margin: 7px 8px 0 3px;
+}
+#slider {
+	position: absolute;
+    top: -1px;
+    left: -4px;
+    width: 8px;
+    height: 17px;
+    margin-left: -10%;
+    background: url(./slider.png);
+	background-size: 8px 17px;
+    border-radius: 1px;
+}
+.video {
+	width:100%;
+	height:100%;
+}
+.volvisual {
+    border: 0;
+    padding: 0;
+    vertical-align: top;
+    width: 18px;
+    height: 20px;
+    background-image: url(./voume.png);
+    margin-top: 5px;
+    overflow: hidden;
+    display: inline-block;
+    background-size: cover;
+}
+.progress {
+	background: url(./progress.png);
+	background-size: 1px 8px;
+    height: 8px;
+    position: relative;
+    margin: 11px 10px 0;
+}
+.position {
+	position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: url(./progress_red.png);
+	background-size: 1px 8px;
+    width: 0%;
+}
+#scrubber {
+	position: absolute;
+    width: 17px;
+    height: 17px;
+    top: -5px;
+    left: -8px;
+    background: url(./knob.png);
+	background-size: 17px 17px;
+    border-radius: 50%;
+}
