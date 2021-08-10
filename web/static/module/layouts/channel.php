@@ -403,7 +403,11 @@
                             </div>
                         <?php } else { ?>
                             <form method="post" action="" id="submitform">
-                                <?php echo $error . "<br>"; ?>
+                                <?php if(isset($error['status'])) { ?>
+                                    <div class="alert" id="videodoesntexist" style="background-color: #FFA3A3;">
+                                        <?php echo $error['message']; ?>
+                                    </div>
+                                <?php } ?>
                                 <small><small style="font-size: 11px; color: #555;">This site is protected by reCAPTCHA and the Google
                                     <a class="grey-link" href="https://policies.google.com/privacy">Privacy Policy</a> and
                                     <a class="grey-link" href="https://policies.google.com/terms">Terms of Service</a> apply.</small></small><br>
