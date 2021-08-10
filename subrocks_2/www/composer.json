@@ -1,6 +1,0 @@
-{
-    "require": {
-        "twig/twig": "3.3.2",
-        "wixel/gump": "1.12.1"
-    }
-}
