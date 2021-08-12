@@ -18,7 +18,7 @@
             </div>
         <?php } else if($_video['commenting'] == "d") { ?>
             <div class="comment-alert">
-                This video has commenting disabled!
+                This channel has commenting disabled!
             </div>
         <?php } else { ?>
             <form method="post" action="" id="submitform">
@@ -47,14 +47,18 @@
             </form>
         <?php } ?><br>
         
-        <?php while($comment = $result->fetch_assoc()) {  ?>
+        <?php while($comment = $result->fetch_assoc()) {  
+			$author = htmlspecialchars($comment['author']);
+		?>
         <hr class="thin-line">
         <div class="comment-watch">
+			<a href="/user/<?php echo $author; ?>">
             <img class="comment-pfp" src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($comment['author']); ?>">
-            <span  style="display: inline-block; vertical-align: top;width: 562px;">
+            </a>
+			<span  style="display: inline-block; vertical-align: top;width: 562px;">
                 <span class="comment-info" style="display: inline-block;">
-                    <b><a style="text-decoration: none;" href="/user/<?php echo htmlspecialchars($comment['author']); ?>">
-                        <?php echo htmlspecialchars($comment['author']); ?> 
+                    <b><a style="text-decoration: none;" href="/user/<?php echo $author; ?>">
+                        <?php echo $author; ?> 
                     </a></b> 
                     <span style="color: <?php echo htmlspecialchars($_user['primary_color_text']); ?>;">(<?php echo $_video_fetch_utils->time_elapsed_string($comment['date']); ?>)</span>
                     <?php if(isset($_SESSION['siteusername']) && $_SESSION['siteusername'] == $_user['username']) { ?>

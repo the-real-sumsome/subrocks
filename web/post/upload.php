@@ -126,7 +126,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $author = socketSafeChars($_SESSION['siteusername']);
         $buffer = "pushQueue;" . $title . ";" . $description . ";" . $tags . ";" . $queuerFile . ";" . $author . ";" . $XML . ";" . $category;
 
-        $fp = fsockopen("queuer", 1024, $errno, $errstr, 30);
+        $fp = fsockopen("localhost", 1024, $errno, $errstr, 30);
         if (!$fp) {
            // echo "$errstr ($errno)<br />\n";
         } else {

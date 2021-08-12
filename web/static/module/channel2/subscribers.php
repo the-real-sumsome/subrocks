@@ -9,10 +9,13 @@
             $stmt->execute();
             $result = $stmt->get_result();
             while($subscriber = $result->fetch_assoc()) {
+				$user = htmlspecialchars($subscriber['sender']);
         ?>
                 <div class="grid-item" style="width: 80px;">
+					<a href="/user/<?php echo $user; ?>">
                     <img style="width: 60px;height: 60px;" class="channel-pfp" src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($subscriber['sender']); ?>"><br>
-                    <a style="font-size: 10px;text-decoration: none;" href="/user/<?php echo htmlspecialchars($subscriber['sender']); ?>"><?php echo htmlspecialchars($subscriber['sender']); ?></a>
+                    </a>
+					<a style="font-size: 10px;text-decoration: none;" href="/user/<?php echo $user; ?>"><?php echo $user; ?></a>
                 </div>
         <?php } ?>
         <br>

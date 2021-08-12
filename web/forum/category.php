@@ -91,12 +91,16 @@
                 <span style="color: gray; font-size: 11px;">(<?php echo htmlspecialchars($thread['author']); ?>) (<?php echo $_user_fetch_utils->fetch_thread_replies($thread['id']); ?> replies) <?php echo date("M d, Y", strtotime($thread['date'])); ?></span>
                 <br>
                 <?php echo $_video_fetch_utils->parseTextNoLink($thread['contents']); ?><br><br>
-                <?php if(isset($latest_forum_post_reply['toid'])) { ?>
+                <?php if(isset($latest_forum_post_reply['toid'])) { 
+							$author = htmlspecialchars($latest_forum_post_reply['author']);
+				?>
                 <div class="comment-watch" style="margin-left: 20px;">
+					<a href="/user/<?php echo $author; ?>">
                     <img class="comment-pfp" style="width: 33px;height: 33px;" src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($latest_forum_post_reply['author']); ?>">
-                    <span  style="display: inline-block; vertical-align: top;width: 562px;;">
+                    </a>
+					<span  style="display: inline-block; vertical-align: top;width: 562px;;">
                         <span class="comment-info" style="display: inline-block;">
-                            <b><a style="text-decoration: none;" href="/user/<?php echo htmlspecialchars($latest_forum_post_reply['author']); ?>">
+                            <b><a style="text-decoration: none;" href="/user/<?php echo $author; ?>">
                                 <?php echo htmlspecialchars($latest_forum_post_reply['author']); ?> 
                             </a></b> 
                             <span style="color: #666;">(<?php echo $_video_fetch_utils->time_elapsed_string($latest_forum_post_reply['date']); ?>)</span>

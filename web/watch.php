@@ -385,8 +385,10 @@
                                         $video = $_video_fetch_utils->fetch_video_rid($video['video']);
                             ?>
                                 <div class="grid-item" style="animation: scale-up-recent 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;">
+									<a href="/watch?v=<?php echo $video['rid']; ?>">
                                     <img class="thumbnail" onerror="this.src='/dynamic/thumbs/default.png'" src="/dynamic/thumbs/<?php echo htmlspecialchars($video['thumbnail']); ?>">
-                                    <div class="video-info-grid">
+                                    </a>
+									<div class="video-info-grid">
                                         <a href="/watch?v=<?php echo $video['rid']; ?>"><?php echo htmlspecialchars($video['title']); ?></a><br>
                                         <span class="video-info-small">
                                             <span class="video-views"><?php echo $_video_fetch_utils->fetch_video_views($video['rid']); ?> views</span><br>
@@ -641,8 +643,10 @@
                             }
                         }
                     </script>
+					<a href="/user/<?php echo htmlspecialchars($_video['author']); ?>">
                     <img src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($_video['author']); ?>">
-                    <span class="video-author-info">
+                    </a>
+					<span class="video-author-info">
                         <a href="/user/<?php echo htmlspecialchars($_video['author']); ?>">
                             <b><?php echo htmlspecialchars($_video['author']); ?></b>
                         </a><br>
@@ -693,10 +697,9 @@
                             while($video = $result->fetch_assoc()) {
                         ?>
                             <div class="video-item-watch">
-                                <div class="thumbnail" style="
+                                <a href="/watch?v=<?php echo $video['rid']; ?>" class="thumbnail" style="
                                     background-image: url(/dynamic/thumbs/<?php echo $video['thumbnail']; ?>), url('/dynamic/thumbs/default.png');">
-                                    <a class="quicklist-add" style="top: 30px;" href="/get/add_to_quicklist?v=<?php echo $video['rid']; ?>"></a>
-                                    <span class="timestamp"><?php echo $_video_fetch_utils->timestamp($video['duration']); ?></span></div>
+                                    <span class="timestamp"><?php echo $_video_fetch_utils->timestamp($video['duration']); ?></span></a>
                                 
                                 <div class="video-info-watch">
                                     <a href="/watch?v=<?php echo $video['rid']; ?>"><b><?php echo htmlspecialchars($video['title']); ?></b></a><br>
@@ -721,10 +724,9 @@
                             while($video = $result->fetch_assoc()) {
                         ?>
                             <div class="video-item-watch">
-                                <div class="thumbnail" style="
+                                <a href="/watch?v=<?php echo $video['rid']; ?>" class="thumbnail" style="
                                     background-image: url(/dynamic/thumbs/<?php echo $video['thumbnail']; ?>), url('/dynamic/thumbs/default.png');">
-                                    <a class="quicklist-add" style="top: 30px;" href="/get/add_to_quicklist?v=<?php echo $video['rid']; ?>"></a>
-                                    <span class="timestamp"><?php echo $_video_fetch_utils->timestamp($video['duration']); ?></span></div>
+                                    <span class="timestamp"><?php echo $_video_fetch_utils->timestamp($video['duration']); ?></span></a>
                                 
                                 <div class="video-info-watch">
                                     <a href="/watch?v=<?php echo $video['rid']; ?>"><b><?php echo htmlspecialchars($video['title']); ?></b></a><br>

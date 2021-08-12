@@ -154,7 +154,9 @@
                         <?php } ?>
                     </div>
                     <div class="channel-box-description">
+						<a href="/user/<?php echo htmlspecialchars($_user['username']); ?>">
                         <img class="channel-pfp" src="/dynamic/pfp/<?php echo $_user['pfp']; ?>">
+						</a>
                         <span class="channel-stats">
                             <h3><?php echo htmlspecialchars($_user['username']); ?></h3>
                             <span class="channel-stats-minor">
@@ -175,8 +177,10 @@
                         <h3 style="display: inline-block;">Contact with <?php echo htmlspecialchars($_user['username']); ?></h3>
                     </div>
                     <div class="channel-box-no-bg">
+						<a href="/user/<?php echo htmlspecialchars($_user['username']); ?>">
                         <div style="display: inline-block;width:116px;height:95px;"><img src="/dynamic/pfp/<?php echo $_user['pfp']; ?>" width="100%" height="100%"></div>
-                        <span style="display: inline-block;vertical-align: top;line-height: 30px;line-height: 21px;font-size: 11px;">
+                        </a>
+						<span style="display: inline-block;vertical-align: top;line-height: 30px;line-height: 21px;font-size: 11px;">
                             <img src="/static/img/message.png" style="vertical-align: middle;"> <a href="/inbox/send?to=<?php echo htmlspecialchars($_user['username']); ?>">Send Message</a><br>
                             <img src="/static/img/comment.png" style="vertical-align: middle;"> <a href="#">Add Contact</a><br>
                             <?php if($_user_fetch_utils->if_blocked($_SESSION['siteusername'], $_user['username']) == false) { ?>
@@ -205,8 +209,8 @@
                         ?>
                             <img style="vertical-align: middle;" src="/static/img/upload.png"> <b><?php echo htmlspecialchars($video['author']); ?> uploaded a video</b> (<?php echo $_video_fetch_utils->time_elapsed_string($video['publish']); ?>)
                             <div class="video-item-watch" style="margin-left: 20px;">
-                                <div class="thumbnail" style="
-                                    background-image: url(/dynamic/thumbs/<?php echo $video['thumbnail']; ?>), url('/dynamic/thumbs/default.png');"><span class="timestamp"><?php echo $_video_fetch_utils->timestamp($video['duration']); ?></span></div>
+                                <a href="/watch?v=<?php echo $video['rid']; ?> class="thumbnail" style="
+                                    background-image: url(/dynamic/thumbs/<?php echo $video['thumbnail']; ?>), url('/dynamic/thumbs/default.png');"><span class="timestamp"><?php echo $_video_fetch_utils->timestamp($video['duration']); ?></span></a>
                                 
                                 <div class="video-info-watch" style="width: 170px;">
                                     <a style="display: inline-block;width: 174px;word-wrap: break-word;" href="/watch?v=<?php echo $video['rid']; ?>"><b><?php echo $_video_fetch_utils->parse_title($video['title']);  ?></b></a><br>
@@ -235,11 +239,14 @@
                             $result = $stmt->get_result();
                             while($subscriber = $result->fetch_assoc()) {
                                 if($_user_fetch_utils->user_exists($subscriber['reciever'])) {
+									$user = htmlspecialchars($subscriber['reciever']);
                         ?>
 
                                 <div class="grid-item" style="width: 90px;">
+									<a href="/user/<?php echo $user; ?>">
                                     <img class="channel-pfp" style="width: 58px; height: 58px;" src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($subscriber['reciever']); ?>"><br>
-                                    <a style="font-size: 10px;text-decoration: none;" href="/user/<?php echo htmlspecialchars($subscriber['reciever']); ?>"><?php echo htmlspecialchars($subscriber['reciever']); ?></a>
+                                    </a>
+									<a style="font-size: 10px;text-decoration: none;" href="/user/<?php echo $user; ?>"><?php echo htmlspecialchars($subscriber['reciever']); ?></a>
                                 </div>
                         <?php } } ?>
                     </div>
@@ -274,8 +281,10 @@
                         ?>
 
                                 <div class="grid-item" style="">
+									<a href="/watch?v=<?php echo $video['rid']; ?>">
                                     <img class="thumbnail" onerror="this.src='/dynamic/thumbs/default.png'" src="/dynamic/thumbs/<?php echo $_video_fetch_utils->parseTitle($video['thumbnail']); ?>">
-                                    <div class="video-info-grid">
+                                    </a>
+									<div class="video-info-grid">
                                         <a style="display: inline-block;width: 127px;word-wrap: break-word;" href="/watch?v=<?php echo $video['rid']; ?>"><?php echo $_video_fetch_utils->parse_title($video['title']);  ?></a><br>
                                         <span class="video-info-small">
                                             <span class="video-views"><?php echo $_video_fetch_utils->fetch_video_views($video['rid']); ?> views</span><br>
@@ -305,8 +314,10 @@
                         ?>
 
                                 <div class="grid-item" style="">
+									<a href="/watch?v=<?php echo $video['rid']; ?>">
                                     <img class="thumbnail" onerror="this.src='/dynamic/thumbs/default.png'" src="/dynamic/thumbs/<?php echo htmlspecialchars($video['thumbnail']); ?>">
-                                    <div class="video-info-grid">
+                                    </a>
+									<div class="video-info-grid">
                                         <a href="/watch?v=<?php echo $video['rid']; ?>"><?php echo htmlspecialchars($video['title']);  ?></a><br>
                                         <span class="video-info-small">
                                             <span class="video-views"><?php echo $_video_fetch_utils->fetch_video_views($video['rid']); ?> views</span><br>
@@ -331,11 +342,14 @@
                             $stmt->execute();
                             $result = $stmt->get_result();
                             while($subscriber = $result->fetch_assoc()) {
+								$user = htmlspecialchars($subscriber['sender']);
                         ?>
 
                                 <div class="grid-item" style="">
+									<a href="/user/<?php echo $user; ?>">
                                     <img class="channel-pfp" src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($subscriber['sender']); ?>"><br>
-                                    <a style="font-size: 10px;text-decoration: none;" href="/user/<?php echo htmlspecialchars($subscriber['sender']); ?>"><?php echo htmlspecialchars($subscriber['sender']); ?></a>
+                                    </a>
+									<a style="font-size: 10px;text-decoration: none;" href="/user/<?php echo $user; ?>"><?php echo $user; ?></a>
                                 </div>
                         <?php } ?>
                     </div>
@@ -354,10 +368,13 @@
                             $stmt->execute();
                             $result = $stmt->get_result();
                             while($friend = $result->fetch_assoc()) { 
+								$user = htmlspecialchars($friend['sender']);
                         ?>
                             <div class="grid-item" style="">
+								<a href="/user/<?php echo $user; ?>">
                                 <img class="channel-pfp" src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($friend['sender']); ?>"><br>
-                                <a style="font-size: 10px;text-decoration: none;" href="/user/<?php echo htmlspecialchars($friend['sender']); ?>"><?php echo htmlspecialchars($friend['sender']); ?></a>
+                                </a>
+								<a style="font-size: 10px;text-decoration: none;" href="/user/<?php echo $user; ?>"><?php echo $user; ?></a>
                             </div>
                         <?php } ?>
 
@@ -367,10 +384,13 @@
                             $stmt->execute();
                             $result = $stmt->get_result();
                             while($friend = $result->fetch_assoc()) { 
+								$user = htmlspecialchars($friend['reciever']);
                         ?>
                             <div class="grid-item" style="">
+								<a href="/user/<?php echo $user; ?>">
                                 <img class="channel-pfp" src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($friend['reciever']); ?>"><br>
-                                <a style="font-size: 10px;text-decoration: none;" href="/user/<?php echo htmlspecialchars($friend['reciever']); ?>"><?php echo htmlspecialchars($friend['reciever']); ?></a>
+                                </a>
+								<a style="font-size: 10px;text-decoration: none;" href="/user/<?php echo $user; ?>"><?php echo $user; ?></a>
                             </div>
                         <?php } ?>
                     </div>
@@ -399,7 +419,7 @@
                             </div>
                         <?php } else if($_video['commenting'] == "d") { ?>
                             <div class="comment-alert">
-                                This video has commenting disabled!
+                                This channel has commenting disabled!
                             </div>
                         <?php } else { ?>
                             <form method="post" action="" id="submitform">
@@ -432,14 +452,19 @@
                             </form>
                         <?php } ?><br>
                         
-                        <?php while($comment = $result->fetch_assoc()) {  ?>
+                        <?php while($comment = $result->fetch_assoc()) {
+							$author = htmlspecialchars($comment['author']);
+
+						?>
                         <hr class="thin-line">
                         <div class="comment-watch">
+							<a href="/user/<?php echo $author; ?>">
                             <img class="comment-pfp" src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($comment['author']); ?>">
-                            <span  style="display: inline-block; vertical-align: top;width: 562px;">
+                            </a>
+							<span  style="display: inline-block; vertical-align: top;width: 562px;">
                                 <span class="comment-info" style="display: inline-block;">
-                                    <b><a style="text-decoration: none;" href="/user/<?php echo htmlspecialchars($comment['author']); ?>">
-                                        <?php echo htmlspecialchars($comment['author']); ?> 
+                                    <b><a style="text-decoration: none;" href="/user/<?php echo $author; ?>">
+                                        <?php echo $author; ?> 
                                     </a></b> 
                                     <span style="color: #666;">(<?php echo $_video_fetch_utils->time_elapsed_string($comment['date']); ?>)</span>
                                     <?php if(isset($_SESSION['siteusername']) && $_SESSION['siteusername'] == $_user['username']) { ?>
