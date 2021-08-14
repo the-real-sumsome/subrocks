@@ -92,13 +92,13 @@
                 <br>
                 <?php echo $_video_fetch_utils->parseTextNoLink($thread['contents']); ?><br><br>
                 <?php if(isset($latest_forum_post_reply['toid'])) { 
-							$author = htmlspecialchars($latest_forum_post_reply['author']);
-				?>
+                            $author = htmlspecialchars($latest_forum_post_reply['author']);
+                ?>
                 <div class="comment-watch" style="margin-left: 20px;">
-					<a href="/user/<?php echo $author; ?>">
+                    <a href="/user/<?php echo $author; ?>">
                     <img class="comment-pfp" style="width: 33px;height: 33px;" src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($latest_forum_post_reply['author']); ?>">
                     </a>
-					<span  style="display: inline-block; vertical-align: top;width: 562px;;">
+                    <span  style="display: inline-block; vertical-align: top;width: 562px;;">
                         <span class="comment-info" style="display: inline-block;">
                             <b><a style="text-decoration: none;" href="/user/<?php echo $author; ?>">
                                 <?php echo htmlspecialchars($latest_forum_post_reply['author']); ?> 

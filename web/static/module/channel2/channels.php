@@ -5,12 +5,12 @@
             <br>
             <?php foreach($_user['featured_channels'] as $featured_channel) { 
                 if($_user_fetch_utils->user_exists($featured_channel)) { 
-					$user = htmlspecialchars($featured_channel);
-				?>
-				<a href="/user/<?php echo $user; ?>">
+                    $user = htmlspecialchars($featured_channel);
+                ?>
+                <a href="/user/<?php echo $user; ?>">
                 <img class="comment-pfp" src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($featured_channel); ?>">
                 </a>
-				<span class="channel-stats" style="width: 197px;">
+                <span class="channel-stats" style="width: 197px;">
                     <h2 style="font-weight: normal;margin-bottom: 4px;display: inline-block;">
                         <a href="/user/<?php echo $user; ?>"><?php echo $user; ?></a>
                     </h2><br>

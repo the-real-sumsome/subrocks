@@ -79,7 +79,7 @@
                 $result = $stmt->get_result();
                 while($category = $result->fetch_assoc()) {
                     $latest_forum_post = $_user_fetch_utils->fetch_latest_forum_post($category['title']);
-					$latest_forum_poster = htmlspecialchars($latest_forum_post['author']);
+                    $latest_forum_poster = htmlspecialchars($latest_forum_post['author']);
             ?>
                 <hr class="thin-line">
                 <h3 style="display: inline-block;"><a href="/forum/category?c=<?php echo urlencode($category['title']); ?>"><?php echo htmlspecialchars($category['title']); ?></a></h3>
@@ -88,9 +88,9 @@
                 <?php echo htmlspecialchars($category['description']); ?><br><br>
                 <a href="/forum/thread?v=<?php echo $latest_forum_post['id']; ?>"><h4><?php echo htmlspecialchars($latest_forum_post['title']); ?></h4></a>
                 <div class="comment-watch">
-					<a href="/user/<?php echo $latest_forum_poster; ?>">
+                    <a href="/user/<?php echo $latest_forum_poster; ?>">
                     <img class="comment-pfp" src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($latest_forum_post['author']); ?>">
-					</a>
+                    </a>
                     <span  style="display: inline-block; vertical-align: top;width: 562px;;">
                         <span class="comment-info" style="display: inline-block;">
                             <b><a style="text-decoration: none;" href="/user/<?php echo $latest_forum_poster; ?>">

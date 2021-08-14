@@ -98,17 +98,17 @@
                         $text = $_POST['comment'];
                         $stmt->execute();
                         $stmt->close();
-						
-						$author = htmlspecialchars($thread['author']);
+                        
+                        $author = htmlspecialchars($thread['author']);
                 
                         skipcomment:
                     }
                 ?>
                 <div class="comment-watch">
-					<a href="/user/<?php echo $author; ?>">
+                    <a href="/user/<?php echo $author; ?>">
                     <img class="comment-pfp" src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($thread['author']); ?>">
                     </a>
-					<span  style="display: inline-block; vertical-align: top;width: 562px;;">
+                    <span  style="display: inline-block; vertical-align: top;width: 562px;;">
                         <span class="comment-info" style="display: inline-block;">
                             <b><a style="text-decoration: none;" href="/user/<?php echo $author; ?>">
                                 <?php echo htmlspecialchars($thread['author']); ?> 
@@ -154,14 +154,14 @@
                     $stmt->execute();
                     $result = $stmt->get_result();
                     while($comment = $result->fetch_assoc()) {
-						$author = htmlspecialchars($comment['author']);
+                        $author = htmlspecialchars($comment['author']);
                 ?>
                     <hr class="thin-line">
                     <div class="comment-watch">
-						<a href="/user/<?php echo $author; ?>">
+                        <a href="/user/<?php echo $author; ?>">
                         <img class="comment-pfp" src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($comment['author']); ?>">
                         </a>
-						<span  style="display: inline-block; vertical-align: top;width: 562px;;">
+                        <span  style="display: inline-block; vertical-align: top;width: 562px;;">
                             <span class="comment-info" style="display: inline-block;">
                                 <b><a style="text-decoration: none;" href="/user/<?php echo $author; ?>">
                                     <?php echo htmlspecialchars($comment['author']); ?> 

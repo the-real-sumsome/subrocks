@@ -8,13 +8,13 @@
             $stmt->execute();
             $result = $stmt->get_result();
             while($friend = $result->fetch_assoc()) { 
-				$user = htmlspecialchars($friend['sender']);
+                $user = htmlspecialchars($friend['sender']);
         ?>
             <div class="grid-item" style="width: 80px;">
-				<a href="/user/<?php echo $user; ?>">
+                <a href="/user/<?php echo $user; ?>">
                 <img style="width: 60px;height: 60px;" class="channel-pfp" src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($friend['sender']); ?>"><br>
                 </a>
-				<a style="font-size: 10px;text-decoration: none;" href="/user/<?php echo $user; ?>"><?php echo $user; ?></a>
+                <a style="font-size: 10px;text-decoration: none;" href="/user/<?php echo $user; ?>"><?php echo $user; ?></a>
             </div>
         <?php } ?>
 
@@ -24,13 +24,13 @@
             $stmt->execute();
             $result = $stmt->get_result();
             while($friend = $result->fetch_assoc()) {
-				$user = htmlspecialchars($friend['reciever']);
+                $user = htmlspecialchars($friend['reciever']);
         ?>
             <div class="grid-item" style="width: 80px;">
-				<a href="/user/<?php echo $user; ?>">
+                <a href="/user/<?php echo $user; ?>">
                 <img style="width: 60px;height: 60px;" class="channel-pfp" src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($friend['reciever']); ?>"><br>
                 </a>
-				<a style="font-size: 10px;text-decoration: none;" href="/user/<?php echo $user; ?>"><?php echo $user; ?></a>
+                <a style="font-size: 10px;text-decoration: none;" href="/user/<?php echo $user; ?>"><?php echo $user; ?></a>
             </div>
         <?php } ?>
         <br>

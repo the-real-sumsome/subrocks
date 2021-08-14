@@ -38,7 +38,7 @@
                 filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#ffffff",GradientType=1);
                 text-align: right;
                 font-weight: bold;
-				color: #000;
+                color: #000;
             }
 
             .recent-video-thumbnail {
@@ -108,7 +108,7 @@
                     $stmt = $conn->prepare("SELECT video FROM history ORDER BY id DESC LIMIT 100");
                     $stmt->execute();
                     $result = $stmt->get_result();
-		
+        
                     while($video = $result->fetch_assoc()) { 
                         $video = $_video_fetch_utils->fetch_video_rid($video['video']);
                         if($_video_fetch_utils->video_exists($video['rid']) && !in_array($video['rid'], $_history_videos) && $_history_videos['i'] != 4) { 
@@ -121,7 +121,7 @@
                             <span class="recent-video-timestamp">
                                 <?php echo $_video_fetch_utils->timestamp($video['duration']); ?>
                             </span>
-							</a>
+                            </a>
                             <div class="video-info-grid hover-stuff" style="position: relative;bottom: 20px;">
                                 <a style="display: inline-block;width: 126px;word-wrap: anywhere;" href="/watch?v=<?php echo $video['rid']; ?>"><?php echo $_video_fetch_utils->parseTitle($video['title']); ?></a><br>
                                 <span class="video-info-small">
