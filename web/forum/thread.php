@@ -98,15 +98,19 @@
                         $text = $_POST['comment'];
                         $stmt->execute();
                         $stmt->close();
+                        
+                        $author = htmlspecialchars($thread['author']);
                 
                         skipcomment:
                     }
                 ?>
                 <div class="comment-watch">
+                    <a href="/user/<?php echo $author; ?>">
                     <img class="comment-pfp" src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($thread['author']); ?>">
+                    </a>
                     <span  style="display: inline-block; vertical-align: top;width: 562px;;">
                         <span class="comment-info" style="display: inline-block;">
-                            <b><a style="text-decoration: none;" href="/user/<?php echo htmlspecialchars($thread['author']); ?>">
+                            <b><a style="text-decoration: none;" href="/user/<?php echo $author; ?>">
                                 <?php echo htmlspecialchars($thread['author']); ?> 
                             </a></b> 
                             <span style="color: #666;">(<?php echo $_video_fetch_utils->time_elapsed_string($thread['date']); ?>)</span>
@@ -150,13 +154,16 @@
                     $stmt->execute();
                     $result = $stmt->get_result();
                     while($comment = $result->fetch_assoc()) {
+                        $author = htmlspecialchars($comment['author']);
                 ?>
                     <hr class="thin-line">
                     <div class="comment-watch">
+                        <a href="/user/<?php echo $author; ?>">
                         <img class="comment-pfp" src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($comment['author']); ?>">
+                        </a>
                         <span  style="display: inline-block; vertical-align: top;width: 562px;;">
                             <span class="comment-info" style="display: inline-block;">
-                                <b><a style="text-decoration: none;" href="/user/<?php echo htmlspecialchars($comment['author']); ?>">
+                                <b><a style="text-decoration: none;" href="/user/<?php echo $author; ?>">
                                     <?php echo htmlspecialchars($comment['author']); ?> 
                                 </a></b> 
                                 <span style="color: #666;">(<?php echo $_video_fetch_utils->time_elapsed_string($comment['date']); ?>)</span>

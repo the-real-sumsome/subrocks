@@ -1,6 +1,8 @@
 <div class="channel-box-profle">
     <div class="channel-box-description">
+        <a href="/user/<?php echo htmlspecialchars($_user['username']); ?>">
         <img class="channel-pfp" src="/dynamic/pfp/<?php echo $_user['pfp']; ?>">
+        </a>
         <span class="channel-stats" style="width: 197px;">
             <h2 style="font-weight: normal;margin-bottom: 4px;"><?php echo htmlspecialchars($_user['username']); ?></h2>
             <?php if(@$_SESSION['siteusername'] != $_user['username']) { ?>

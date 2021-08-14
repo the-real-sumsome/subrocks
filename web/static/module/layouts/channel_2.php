@@ -205,7 +205,9 @@
             <div class="www-channel-top" style="overflow: auto;">    
                 <div style="background: <?php echo htmlspecialchars($_user['secondary_color']); ?>;color: <?php echo htmlspecialchars($_user['primary_color_text']); ?>;padding: 2px;border-radius: 5px;">
                     <div class="www-channel-top">
+                        <a href="/user/<?php echo htmlspecialchars($_user['username']); ?>">
                         <img class="channel-pfp" src="/dynamic/pfp/<?php echo $_user['pfp']; ?>" style="vertical-align: middle;margin-right: 5px;width: 43px;height: 43px;">
+                        </a>
                         <h3 style="color:<?php echo htmlspecialchars($_user['primary_color']); ?>;display: inline-block;"><?php echo htmlspecialchars(substr($_user['username'], 0, 16)); ?>'s Channel</h3>
                         <?php if(@$_SESSION['siteusername'] != $_user['username']) { ?>
                             <a href="/get/<?php if($_user['subscribed'] == true) { ?>un<?php } ?>subscribe?n=<?php echo htmlspecialchars($_user['username']); ?>">
@@ -378,7 +380,7 @@
                             </style>
                             <a href="#" onclick="main()" class="view-button">
                                 <div class="contents" id="test2">
-                                    <div class="a box"></div>		
+                                    <div class="a box"></div>       
                                     <div class="a tri" style="height: 6px;position: absolute;top: 0;color:<?php echo htmlspecialchars($_user['third_color']); ?>;"></div>
                                     <div class="a yt"></div>
                                     <div class="a yc"></div>
@@ -947,10 +949,8 @@
                             while($video = $result->fetch_assoc()) {
                         ?>
                             <div class="video-item-watch">
-                                <div class="thumbnail" style="
-                                    background-image: url(/dynamic/thumbs/<?php echo $video['thumbnail']; ?>), url('/dynamic/thumbs/default.png');">
-                                    <a class="quicklist-add" style="top: 30px;" href="/get/add_to_quicklist?v=<?php echo $video['rid']; ?>"></a>
-                                    <span class="timestamp"><?php echo $_video_fetch_utils->timestamp($video['duration']); ?></span></div>
+                                <a href="/watch?v=<?php echo $video['rid']; ?>" class="thumbnail" style="background-image: url(/dynamic/thumbs/<?php echo $video['thumbnail']; ?>), url('/dynamic/thumbs/default.png');">
+                                    <span class="timestamp"><?php echo $_video_fetch_utils->timestamp($video['duration']); ?></span></a>
                                 
                                 <div class="video-info-watch">
                                     <a style="color: <?php echo htmlspecialchars($_user['text_color']); ?>;" href="/watch?v=<?php echo $video['rid']; ?>"><b><?php echo htmlspecialchars($video['title']); ?></b></a><br>
@@ -975,10 +975,10 @@
                                 $video = $_video_fetch_utils->fetch_video_rid($video['reciever']);
                                 if($_video_fetch_utils->video_exists($video['rid'])) { ?>
                                     <div class="video-item-watch">
-                                        <div class="thumbnail" style="
+                                        <a href="/watch?v=<?php echo $video['rid']; ?>" class="thumbnail" style="
                                             background-image: url(/dynamic/thumbs/<?php echo $video['thumbnail']; ?>), url('/dynamic/thumbs/default.png');">
                                             <a class="quicklist-add" style="top: 30px;" href="/get/add_to_quicklist?v=<?php echo $video['rid']; ?>"></a>
-                                            <span class="timestamp"><?php echo $_video_fetch_utils->timestamp($video['duration']); ?></span></div>
+                                            <span class="timestamp"><?php echo $_video_fetch_utils->timestamp($video['duration']); ?></span></a>
                                         
                                         <div class="video-info-watch">
                                             <a style="color: <?php echo htmlspecialchars($_user['text_color']); ?>;" href="/watch?v=<?php echo $video['rid']; ?>"><b><?php echo htmlspecialchars($video['title']); ?></b></a><br>
@@ -1003,7 +1003,9 @@
                         while($video = $result->fetch_assoc()) {
                     ?>
                         <div class="grid-item" style="">
+                            <a href="/user/<?php echo htmlspecialchars($video['author']); ?>">
                             <img class="thumbnail" onerror="this.src='/dynamic/thumbs/default.png'" src="/dynamic/thumbs/<?php echo $_video_fetch_utils->parseTitle($video['thumbnail']); ?>">
+                            </a>
                             <div class="video-info-grid">
                                 <a style="color: <?php echo htmlspecialchars($_user['text_color']); ?>;display: inline-block;width: 127px;word-wrap: break-word;" href="/watch?v=<?php echo $video['rid']; ?>"><?php echo $_video_fetch_utils->parse_title($video['title']);  ?></a><br>
                                 <span class="video-info-small">
