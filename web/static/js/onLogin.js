@@ -1,0 +1,1 @@
+function onLogin(token){ document.getElementById('submitform').submit(); }

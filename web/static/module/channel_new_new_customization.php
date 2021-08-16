@@ -1,55 +1,4 @@
-<script>
-function dropdownchannel() {
-  if ($("#channel-customize").first().is(":hidden")) {
-    $("#channel-customize").slideDown("slow");
-  } else {
-    $("#channel-customize").slideUp("slow");
-  }
-}
-
-function pictures_table() {
-    document.getElementById("misc-table").style.display = "none";
-    document.getElementById("bg-table").style.display = "none";
-    document.getElementById("pictures-table").style.display = "block";
-    document.getElementById("layout-table").style.display = "none";
-    document.getElementById("pictures").className = "selected-user";
-    document.getElementById("text").className = "non";
-    document.getElementById("bg").className = "non";
-};
-
-function text_table() {
-    document.getElementById("misc-table").style.display = "block";
-    document.getElementById("bg-table").style.display = "none";
-    document.getElementById("layout-table").style.display = "none";
-    document.getElementById("pictures-table").style.display = "none";
-    document.getElementById("pictures").className = "non";
-    document.getElementById("layout-table").style.display = "none";
-    document.getElementById("text").className = "selected-user";
-    document.getElementById("bg").className = "non";
-};
-
-function bg_table() {
-    document.getElementById("misc-table").style.display = "none";
-    document.getElementById("bg-table").style.display = "block";
-    document.getElementById("layout-table").style.display = "none";
-    document.getElementById("pictures-table").style.display = "none";
-    document.getElementById("pictures").className = "non";
-    document.getElementById("pictures").className = "non";
-    document.getElementById("text").className = "non";
-    document.getElementById("bg").className = "selected-user";
-};
-
-function layout_table() {
-    document.getElementById("misc-table").style.display = "none";
-    document.getElementById("bg-table").style.display = "none";
-    document.getElementById("layout-table").style.display = "block";
-    document.getElementById("pictures-table").style.display = "none";
-    document.getElementById("pictures").className = "non";
-    document.getElementById("pictures").className = "non";
-    document.getElementById("text").className = "non";
-    document.getElementById("bg").className = "selected-user";
-};
-</script>
+<script src='/static/js/channelEdit.js'></script>
 <style>
     .example-parent {
     color: black;
@@ -80,43 +29,7 @@ function layout_table() {
     }
 </style>
 <script>
-function onDragStart(event) {
-  event
-    .dataTransfer
-    .setData('text/plain', event.target.id);
 
-  event
-    .currentTarget
-    .style
-    .backgroundColor = '#f2f2f2;';
-}
-
-function onDrop(event) {
-  const id = event
-    .dataTransfer
-    .getData('text');
-
-    const draggableElement = document.getElementById(id);
-    const dropzone = event.target;
-    dropzone.appendChild(draggableElement);
-
-    event
-    .dataTransfer
-    .clearData();
-}
-
-function onDragOver(event) {
-  event.preventDefault();
-}
-
-function draggables2json() {
-  draggables = $("#layout").children();
-  outj = {};
-  for (di=0; di < draggables.length; di++) {
-    outj[di] = draggables[di].textContent.replace(/\s+$/, '');
-  }
-  return JSON.stringify(outj);
-}
 </script>
 <div class="channel-customization-base" id="channel-customize" style="display: none;">
     <div class="user-header-bottom" style="margin: -5px;">
@@ -168,6 +81,14 @@ function draggables2json() {
                     <input type="file" name="fileToUpload" id="avatar-upload">
                     <!--<button class="www-button www-button-grey" id="av-uplod">Select File</button>-->
                     <input class="www-button www-button-grey" type="submit" value="Upload Image" name="videopageset">
+                </form><br><br><hr class="thin-line">
+
+                <b>Custom CSS</b><br>
+                <span style="font-size: 11px;" class="grey-text">Don't use if you don't know what you're doing. [MAX 10,000 CHARS]<br>
+                You MUST use an image proxy for XSS protection. Prefix every image url() with //images.weserv.nl/?url=</span><br>
+                <form method="post" id="bio" action="/post/channel_update_new" enctype="multipart/form-data">
+                    <textarea style="width: 345px;padding: 0px;background-color:white;border: 1px solid #d3d3d3;" id="biomd" placeholder="Custom CSS" name="css"><?php echo htmlspecialchars($_user['css']); ?></textarea><br><br>
+                    <input class="www-button www-button-grey" style="margin: 0px;" name="cssset" type="submit" value="Set">
                 </form><br><br><hr class="thin-line">
             </td>
             <td style="vertical-align: top;     padding-left: 94px; width: 432px;">
@@ -635,47 +556,4 @@ function draggables2json() {
         </tr>
     </table>
 </div>
-<script>
-var alerts = 0; 
-$('#leftlayoutset' ).submit(
-    function( e ) {
-        var data = new FormData(this);
-        jQuery.each(jQuery('#fileToUpload')[0].files, function(i, file) {
-            data.append('file-'+i, file);
-        });
-
-        $.ajax( {
-            url: '/post/channel_update_new',
-            type: 'POST',
-            data: data,
-            cache: false,
-            processData: false,
-            contentType: false,
-            success: function(result){
-                alerts++;
-                addAlert("editsuccess_" + alerts, "Successfully updated your channel!");
-                showAlert("#editsuccess_" + alerts);
-                console.log("DEBUG: " + result);
-            }
-        } );
-        e.preventDefault();
-    } 
-);
-</script>
-<script>
-    function getData() {
-        var layout = draggables2json();
-
-        $.ajax({
-        url: 'set_customization.php',
-        method: 'POST',
-        dataType: 'text',
-        data: {
-            layout: layout,
-        },
-        success: function(response) {
-            alert("Successfully updated your channel layout.");
-        }
-        });
-    };
-</script>
+<script src='/static/js/channelEditJ.js'></script>

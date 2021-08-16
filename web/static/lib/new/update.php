@@ -85,6 +85,15 @@ class user_update_utils {
         return true;
     }
 
+    function update_user_css($username, $css) {
+        $stmt = $this->conn->prepare("UPDATE users SET css = ? WHERE username = ?");
+        $stmt->bind_param("ss", $css, $username);
+        $stmt->execute();
+        $stmt->close();
+        
+        return true;
+    }
+
     function update_user_channels($username, $bio) {
         $stmt = $this->conn->prepare("UPDATE users SET featured_channels = ? WHERE username = ?");
         $stmt->bind_param("ss", $bio, $username);

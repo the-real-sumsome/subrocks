@@ -61,6 +61,12 @@
     </div>
     <?php } ?>
 
+    <?php if(isset($_GET['groupdoesntexist'])) { ?>
+    <div class="alert" id="groupdoesntexist" style="background-color: #FFA3A3;">
+        This group does not exist!
+    </div>
+    <?php } ?>
+
     <?php if(isset($_GET['uploaded'])) { ?>
     <div class="alert" id="uploaded">
         Your video has successfully been uploaded! It will be processing in the background. If your video does not appear within an hour, please reupload.

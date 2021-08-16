@@ -9,10 +9,7 @@
   $_base_utils->initialize_db_var($conn);
   $_video_fetch_utils->initialize_db_var($conn);
   $_user_fetch_utils->initialize_db_var($conn);
-
-  if(!isset($_SESSION['siteusername']))
-    header("Location: /sign_in");
-
+  
   $playlist = $_video_fetch_utils->fetch_playlist_rid($_GET['v']);
   $_base_utils->initialize_page_compass(htmlspecialchars($playlist['title']));
 

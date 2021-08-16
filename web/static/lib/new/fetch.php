@@ -210,6 +210,18 @@ class user_fetch_utils {
         return $user;
     }
 
+    function if_joined_group($user, $groupid) {
+        $stmt = $this->conn->prepare("SELECT `togroup` FROM group_members WHERE username = ? AND togroup = ?");
+        $stmt->bind_param("ss", $user, $groupid);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        if($result->num_rows === 1) { return true; } else { return false; }
+        $stmt->close();
+        
+        return $user;
+    }
+
     function if_cooldown($user) {
         $stmt = $this->conn->prepare("SELECT * FROM users WHERE username = ? AND cooldown_comment >= NOW() - INTERVAL 1 MINUTE");
         $stmt->bind_param("s", $user);
@@ -346,6 +358,18 @@ class user_fetch_utils {
     
     return $user;
     }
+
+    function fetch_group_member_count($id) {
+        $stmt = $this->conn->prepare("SELECT * FROM group_members WHERE togroup = ?");
+        $stmt->bind_param("s", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $rows = mysqli_num_rows($result); 
+        $stmt->close();
+    
+        return $rows;
+    }
+
 
     function fetch_subs_count($username) {
         $stmt = $this->conn->prepare("SELECT * FROM subscribers WHERE reciever = ?");
@@ -767,6 +791,36 @@ class video_fetch_utils {
         $stmt->close();
     }
 
+    function fetch_group_id(string $id) {
+            $stmt = $this->conn->prepare("SELECT * FROM user_groups WHERE id = ?");
+            $stmt->bind_param("s", $id);
+            $stmt->execute();
+        $result = $stmt->get_result();
+        $group = $result->fetch_assoc();
+
+        if($result->num_rows === 0) 
+            return 0;
+        else
+            return $group;
+
+        $stmt->close();
+    }
+
+    function fetch_group_membership_id(string $id) {
+            $stmt = $this->conn->prepare("SELECT * FROM group_members WHERE id = ?");
+            $stmt->bind_param("s", $id);
+            $stmt->execute();
+        $result = $stmt->get_result();
+        $group = $result->fetch_assoc();
+
+        if($result->num_rows === 0) 
+            return 0;
+        else
+            return $group;
+
+        $stmt->close();
+    }
+
     function get_video_views(string $rid) {
             $stmt = $this->conn->prepare("SELECT * FROM views WHERE videoid = ?");
             $stmt->bind_param("s", $rid);
@@ -813,6 +867,18 @@ class video_fetch_utils {
     $stmt->close();
     
     return $user;
+    }
+
+    function group_exists($id) {
+        $stmt = $this->conn->prepare("SELECT `id` FROM user_groups WHERE id = ?");
+        $stmt->bind_param("s", $id);
+        $stmt->execute();
+    $result = $stmt->get_result();
+    $id = $result->fetch_assoc();
+    if($result->num_rows === 1) { return true; } else { return false; }
+    $stmt->close();
+    
+    return $id;
     }
 
     function fetch_views_from_user($user) {
