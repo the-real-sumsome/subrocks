@@ -95,6 +95,21 @@ CREATE TABLE `friends` (
   `status` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_as_cs;
 
+CREATE TABLE `group_discussion` (
+  `id` int NOT NULL,
+  `toid` varchar(255) NOT NULL,
+  `author` varchar(255) NOT NULL,
+  `comment` varchar(500) NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `group_members` (
+  `id` int NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `togroup` varchar(255) NOT NULL,
+  `status` varchar(1) NOT NULL DEFAULT 'a'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 CREATE TABLE `history` (
   `id` int NOT NULL,
   `video` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_as_cs NOT NULL,
@@ -203,8 +218,20 @@ CREATE TABLE `users` (
   `custom_text` varchar(512) COLLATE utf8mb4_0900_as_cs NOT NULL DEFAULT '',
   `featured_channels` varchar(255) COLLATE utf8mb4_0900_as_cs NOT NULL DEFAULT '',
   `transparency` varchar(3) COLLATE utf8mb4_0900_as_cs NOT NULL DEFAULT '1.0',
-  `genre` varchar(255) COLLATE utf8mb4_0900_as_cs NOT NULL DEFAULT 'None'
+  `genre` varchar(255) COLLATE utf8mb4_0900_as_cs NOT NULL DEFAULT 'None',
+  `css` varchar(2048) COLLATE utf8mb4_0900_as_cs NOT NULL DEFAULT '',
+  `partner` varchar(1) COLLATE utf8mb4_0900_as_cs NOT NULL DEFAULT 'n'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_as_cs;
+
+CREATE TABLE `user_groups` (
+  `id` int NOT NULL,
+  `group_title` varchar(255) NOT NULL,
+  `group_description` varchar(1024) NOT NULL,
+  `group_author` varchar(255) NOT NULL,
+  `group_creation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `group_picture` varchar(255) NOT NULL DEFAULT 'default.png',
+  `group_category` varchar(255) NOT NULL DEFAULT 'None'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `videos` (
   `id` int NOT NULL,
@@ -277,6 +304,12 @@ ALTER TABLE `forum_thread`
 ALTER TABLE `friends`
   ADD PRIMARY KEY (`id`);
 
+ALTER TABLE `group_discussion`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `group_members`
+  ADD PRIMARY KEY (`id`);
+
 ALTER TABLE `history`
   ADD PRIMARY KEY (`id`);
 
@@ -305,6 +338,9 @@ ALTER TABLE `subscribers`
   ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `user_groups`
   ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `videos`
@@ -353,6 +389,12 @@ ALTER TABLE `forum_thread`
 ALTER TABLE `friends`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
+ALTER TABLE `group_discussion`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `group_members`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
 ALTER TABLE `history`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
@@ -381,6 +423,9 @@ ALTER TABLE `subscribers`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `users`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `user_groups`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `videos`
